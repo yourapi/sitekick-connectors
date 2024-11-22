@@ -1,0 +1,11 @@
+type: FloatInt  # Type of the data-form will be determined automatically in the future
+
+include:
+    - homepage
+
+data: functions.hosting.timing(include.homepage.final_url)  # Data contains str repr for float and int; convert them where applicable
+
+index:
+    ttfb: data.ttfb (float)
+    ttfb_ex_dns: data.ttfb_ex_dns (float)
+    ttlb: data.ttlb (float)

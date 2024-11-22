@@ -1,0 +1,13 @@
+type: Json  # Type of the data-form will be determined automatically in the future
+
+data: functions.convert.convert_type(data1, float, int)  # Data contains str repr for float and int; convert them where applicable
+
+json: data
+# Stored in the database, very limited querying (only equality/missing/present), presence in lists
+
+file: null
+# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
+# is specified, are automatically named and optionally named explicitly
+
+transient: null
+# Not stored, only used for the current session, no querying, no presence in lists

@@ -1,0 +1,12 @@
+type: StrInt  # Type of the data-form will be determined automatically in the future
+
+data: functions.hosting.homepage(domain)  # Data contains str repr for float and int; convert them where applicable
+
+index:
+    url: data.url (str)
+    final_url: data.final_url (str)
+    final_domain: data.final_domain (str)
+    https: data.https (int)
+    redirect_number: data.redirect_number (int)
+    redirects: data.redirects (int)
+    domain_redirected: data.domain_redirected (int)

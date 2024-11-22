@@ -1,0 +1,3 @@
+# Get the data about the supplied server, using its ip-address
+type: JsonStrInt
+

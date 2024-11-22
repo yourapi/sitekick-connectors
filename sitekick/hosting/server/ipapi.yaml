@@ -1,0 +1,18 @@
+# Get the data about the supplied server, using its ip-address
+type: JsonStrInt
+
+request:
+    functions.requests.get:
+        url: https://ipapi.co/{ip-address}/json
+        params:
+            key: "<<<--gAAAAABnKdnjKg3sakK1UO7sTdg352nsLbuDBNzF3EHtNXhQWw0kaOGJdIf5zx81ZNBSTefhfn6E8uKO_g8kPYHBjInJJjVl8WOqBjiRDyOoGP0lWNrE8H7RFmpIZEV6o0Sn--_LCxW_2lvpfKDC_KABsxUjt6sRYw==-->>>"
+
+data: request.json()
+
+json: data
+
+index:
+    ip: data.ip (str)
+    asn: data.asn (str)
+    latitude: 1_000_000 * data.latitude (int)
+    longitude: 1_000_000 * data.longitude (int)

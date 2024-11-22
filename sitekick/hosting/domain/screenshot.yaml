@@ -1,0 +1,21 @@
+type: StrInt  # Type of the data-form will be determined automatically in the future
+
+include:
+    - homepage
+
+request:
+    functions.requests.get:
+        url: "https://api.apiflash.com/v1/urltoimage"
+        params:
+            access_key: "<<<--gAAAAABnIQPEpqtJHxGMXcmQE-jEJBxxBlIYA_b1pOWn0dUdhs8xG5wmystmZPUJhQkfVUz2NIkzpE1aTWKo7uU69dfdfxrYPYRhNUF8RpoJQuUZ3-IBFX2UuyZ07yhGp-_DzASEhLB1-->>>"
+            wait_until: 'page_loaded'
+            ttl: 14 * 24 * 3600  # 14 days
+            response_type: 'json'
+            url: include.homepage.final_url
+
+data: request.json()
+
+index:
+    url: data.url (str)
+
+# In the future: store the screenshot on S3 backend.

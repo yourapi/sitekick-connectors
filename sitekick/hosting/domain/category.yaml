@@ -1,0 +1,11 @@
+type: StrInt  # Type of the data-form will be determined automatically in the future
+
+include:
+    - homepage
+
+data: functions.hosting.category_by_content(include.homepage.final_url, category_keywords)
+
+index:
+    category: data.category (str)
+    subcategory: data.subcategory (str)
+    arguments: data.arguments (str)
