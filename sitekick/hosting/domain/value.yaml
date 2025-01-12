@@ -8,5 +8,5 @@ include:
 data: functions.hosting.domain_value(include.whois, include.keywords, include.domdetailer)
 
 index:
-    value: data.domainvalue_num_rounded (float)
-    value_exact: data.domainvalue_num (float)
+    value: data.domainvalue_num_rounded -> float
+    value_exact: data.domainvalue_num -> float

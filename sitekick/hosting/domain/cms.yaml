@@ -8,5 +8,5 @@ data: functions.hosting.get_cms(include.homepage.final_url)
 json: data
 
 index:
-    cms: data.cms (str)
+    cms: data.cms -> str
     # Add some extra fields about versions etc

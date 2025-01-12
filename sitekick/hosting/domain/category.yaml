@@ -1,11 +1,212 @@
 type: StrInt  # Type of the data-form will be determined automatically in the future
 
-include:
-    - homepage
+category_keywords:
+-   category: initiated
+    keywords: automate,dns,linkedin,user-friendly,domains,automation,hosting,gui,generated,websites
+-   category: parked
+    keywords: smarthome,digitenne,winkelmand,pluspakket,film1,webmail,kpn,ziggo,popups,opzegbaar
+-   arguments: TransIP
+    category: parked
+    keywords: continuously,registrar,largest,registered,receiving,domain,owner,domeinnaam,customer,overkopen
+-   category: parked
+    keywords: vps,excl,hosting,webshop,gebruiksgemak,domeinnamen,ssl,incl,doorlinken,domeinnaam
+-   arguments: Planet Internet
+    category: outdated
+    keywords: homepage,bezoeker,nummer
+-   arguments: KPN websitemaker
+    category: installed
+    keywords: websitemaker,zelfservice,webwinkel,tevredenheidsgarantie,internetsnelheid,add-on,xperience,winkelmandje,widgets,template
+-   arguments: Apache
+    category: initiated
+    keywords: apache,functioning,normally
+-   arguments: Potential DDoS (try again in some time)
+    category: unreachable
+    keywords: verified,request,while,being
+    subcategory: DDoS protection
+-   category: initiated
+    subcategory: Lorem ipsum
+    keywords: lorem ipsum
+-   category: initiated
+    subcategory: Hello world
+    keywords: hello world.?.?!
+-   category: initiated
+    subcategory: Google pages
+    keywords: The requested URL,was not found on this server,all we know
+-   category: parked
+    keywords: deze domeinnaam is geregistreerd,een klant van
+-   category: initiated
+    subcategory: Hello world
+    keywords: hello world,wordpress
+-   category: unreachable
+    keywords: problem,reaching.*site editor
+-   category: unreachable
+    keywords: vragen,kijk,registrant,onze,heb,neem,validated,validation,validate,nog
+    subcategory: pending validation
+-   arguments: DirectAdmin
+    category: initiated
+    keywords: directory,upload,powered,constructed,website,page,created,amazing,change,into
+-   arguments: DirectAdmin
+    category: initiated
+    keywords: created,directory,welcome,upload,into,change,page,this,home,your
+-   category: parked
+    keywords: vps,excl,hosting,webshop,gebruiksgemak,domeinnamen,ssl,incl,doorlinken,domeinnaam
+-   category: parked
+    keywords: socialmedia-profiel,domeinbeheer,domeinnaam,helpdesk,klantenservice,e-mailadres,doorsturen,verwijs,domein,razendsnel
+    subcategory: Moved out
+-   category: parked
+    keywords: soeben,contenido,zojuist,nederlands,appena,werd,deze,wurden,strato,acaba
+    subcategory: Moved out
+-   category: parked
+    keywords: websitemaker,domeinnamen,domeinnaam,extensies,voordelig,domein,beheert,website,technische,actief
+    subcategory: Moved out
+-   category: parked
+    keywords: vps,webshop,domeinnaam,dedicated,rekenkracht,belgie,geconfigureerd,configureren,wils,sublieme
+    subcategory: Moved out
+-   category: initiated
+    keywords: address,because,this,page,there,see,web,site,no,at
+-   category: initiated
+    keywords: l.l.c,dns,url,configured,propagate,settings,provider,ip,hosting,domain
+-   category: forsale
+    keywords: sedo,domain,bereitgestellten,privacy,werbeanzeigen,parking,policy,eur,automatisiert,generiert
+-   category: initiated
+    keywords: mysql,webmail,hosting,login,portal
+-   category: parked
+    keywords: soeben,contenido,zojuist,nederlands,werd,inget,deze,wurden,strato,acaba
+    subcategory: Moved out
+-   arguments: Frontpage
+    category: outdated
+    keywords: frames,browser,ondersteunt,pagina,gebruikt
+-   arguments: Sedo
+    category: forsale
+    keywords: sedo,webpage,eur,disclaimer,advertisers,domain,constitute,maintains,endorsement,imply
+-   category: initiated
+    keywords: configuration,documentation,successfully,server,installed,refer,web,required,commercial,online
+-   arguments: Sedo
+    category: forsale
+    keywords: sedo,domain,bereitgestellten,privacy,werbeanzeigen,parking,policy,automatisiert,generiert,dynamisch
+-   category: forsale
+    keywords: excl,eur,btw,domein,mail,overnemen,koop,slechts
+-   category: forsale
+    keywords: domeinnaam,empty,netnummer,should,overname,versturen,telefoonnummer,vul,voornaam,be
+-   category: initiated
+    keywords: hosting,website,manager,direct,uw
+-   arguments: Sedo
+    category: forsale
+    keywords: sedo,bereitgestellten,domain,privacy,werbeanzeigen,parking,policy,automatisiert,generiert,dynamisch
+-   category: unreachable
+    keywords: use,not
+-   category: installed
+    keywords: website,gratis,maak
+-   arguments: Sedo
+    category: forsale
+    keywords: sedo,webpage,disclaimer,advertisers,constitute,maintains,endorsement,domain,imply,generated
+-   category: initiated
+    keywords: webpage,generated,default
+-   arguments: Vimexx
+    category: parked
+    keywords: webshop,domeinnaam,soortgelijke,registreren,handleiding,beschikbare,koppelen,website,geparkeerd,geregistreerd
+    subcategory: Moved out
+-   category: unreachable
+    keywords: vragen,kijk,registrant,onze,heb,neem,validated,validation,validate,nog
+    subcategory: pending validation
+-   arguments: Sedo
+    category: forsale
+    keywords: sedo,webpage,disclaimer,advertisers,domain,constitute,maintains,endorsement,imply,generated
+-   category: forsale
+    keywords: domeinnamen,adviesgesprek,domeinnaam,domeinen,leasen,premium,vrijblijvend,venture,select,portfolio
+-   arguments: Argeweb
+    category: parked
+    keywords: domeinnaam,hosting,extensies,voordelige,gewenste,support,hieronder,domein,blije,geregistreerd
+    subcategory: Moved out
+-   arguments: Shock Media
+    category: parked
+    keywords: oplossingen,garanties,innovatieve,vrijblijvend,adviesgesprek,support,b.v,bereikbare,linkedin,proactieve
+-   category: forsale
+    keywords: captcha,30-day,domain,processing,reserved,dedicated,robot,guarantee,customer,sale
+-   category: forsale
+    keywords: prijsopgave,onderstaande,vrijblijvende,bedrijfsnaam,e-mailadres,formulier,vul,opmerking,ontvang,telefoonnummer
+-   arguments: Frontpage
+    category: outdated
+    keywords: uses,browser,frames
+-   category: initiated
+    keywords: shortly,doing,work,being,thank,some,site,patient,back,are
+-   category: installed
+    keywords: writing,gecategoriseerd,edit,delete,welcome,another,hello,aangedreven,then,salon
+-   category: initiated
+    keywords: automate,dns,user-friendly,domains,automation,hosting,gui,generated,websites,developer
+-   category: initiated
+    keywords: functioning,normally
+-   arguments: Account suspended
+    category: unreachable
+    keywords: reseller,overused,domain,suspended,resources,account,ran,either,has,been
+-   category: initiated
+    keywords: whitelist,ubuntu,debian,php,conf,configuration,directories,optimized,configurations,snippets
+-   category: installed
+    keywords: comments,writing,gecategoriseerd,posts,edit,delete,welcome,another,hello,aangedreven
+-   category: parked
+    keywords: domain,has,domein,this,gereserveerd,been
+-   category: forsale
+    keywords: delite,enabling,communities,results,remco,nieuwsbrieven,cookies,experience,desktop,koppelingen
+-   category: initiated
+    keywords: enabled,dsm,setting,has,please,section,finish,web,see,your
+-   category: installed
+    keywords: wordpress,uncategorized,zoeken,commenter,astra,admin,categories,copyright,powered,augustus
+-   category: parked
+    keywords: reseller,domeinnaam,provider,pakket,gekoppeld,server,producten,ondersteuning,koppelen,geparkeerd
+-   arguments: Frontpage
+    category: outdated
+    keywords: frames,browser,ondersteunt,pagina,echter,gebruik
+-   arguments: Antagonist
+    category: parked
+    keywords: redirect,antagonist,domeinnaam,features,support,domein,doorsturen,instellen,tips,gereserveerd
+    subcategory: Moved out
+-   category: initiated
+    keywords: mysql,webmail,login,implode,hosting,portal
+-   category: initiated
+    keywords: virtualization,hypervisor,saas,optimizes,provisioning,automation,profitably,parallels,optimize,linux
+-   category: forsale
+    keywords: domain,sale,this,j,for,c,b,a,contact
+-   category: initiated
+    keywords: modified,description,size,index,name
+-   arguments: Antagonist
+    category: parked
+    keywords: webmail,antagonist,ssl,inloggegevens,domeinnaam,support,aanmaken,domein,instellen,installeren
+    subcategory: Moved out
+-   category: installed
+    keywords: mauris,fermentum,commodo,cras,eget,risus,odio,cursus,amet,tellus
+-   category: installed
+    keywords: address,soon,making,awesome,amazing,coming,site,back,web,this
+-   category: forsale
+    keywords: faqs,caprani,godaddy,whois,ssl,domains,waseem,registrars,30-day,domain
+-   category: initiated
+    keywords: domeinnaam,hoofdmap,hosting,registeren,helpdesk,belgie,geupload,gestelde,real-time,betaalbare
+-   category: installed
+    keywords: soon,coming,ready,something,get,cool
+-   category: forsale
+    keywords: javascript,browser,settings,enabled,upgrade,requires,cookies,site,change
+-   category: forsale
+    keywords: domeinen,mailen,geinteresseerd,indien,koop
+-   category: installed
+    keywords: elit,labore,veniam,commodo,mauris,fermentum,tempor,lorem,eget
+-   category: unreachable
+    keywords: suspended,hosting,information,provider,has,account,more
+    subcategory: account suspended
+-   category: initiated
+    keywords: thu,feb,directory,upload,powered,constructed,website,page,created,amazing
+-   category: forsale
+    keywords: domeinnamen,adviesgesprek,domeinnaam,domeinen,premium,leasen,vrijblijvend,venture,selecteer,select
+-   category: installed
+    keywords: soon,coming
+-   category: parked
+    keywords: geregistreerd,momenteel,klanten,gebruikt,wordt,onze
+-   category: initiated
+    keywords: successfully,congratulations,powered,seeing,started,admin,yet,trying,proxy,access
+-   category: initiated
+    keywords: published,yet,has,offline,not,this,site,been
 
-data: functions.hosting.category_by_content(include.homepage.final_url, category_keywords)
+data: << functions.sitekick.hosting.category_by_content(domain, category_keywords) >>
 
 index:
-    category: data.category (str)
-    subcategory: data.subcategory (str)
-    arguments: data.arguments (str)
+    category: << data.category >> -> str
+    subcategory: << data.subcategory >> -> str
+    arguments: << data.arguments >> -> str

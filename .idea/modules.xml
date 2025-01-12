@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/sitekick-connectors.iml" filepath="$PROJECT_DIR$/.idea/sitekick-connectors.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../sitekick-entities/.idea/sitekick-entities.iml" filepath="$PROJECT_DIR$/../sitekick-entities/.idea/sitekick-entities.iml" />
     </modules>
   </component>
 </project>

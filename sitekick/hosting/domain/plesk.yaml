@@ -1,10 +1,10 @@
 type: JsonStrInt  # Type of the data-form will be determined automatically in the future
 
 index: # Index of the data-form, for querying and data-analysis.
-    majesticCF: data.majesticCF (int)
-    majesticTF: data.majesticTF (int)
-    mozRank: data.mozRank (int)
-    mozLinks: data.mozLinks(int)
+    majesticCF: data.majesticCF -> int
+    majesticTF: data.majesticTF -> int
+    mozRank: data.mozRank -> int
+    mozLinks: data.mozLinks-> int
 
 json: data
 # Stored in the database, very limited querying (only equality/missing/present), presence in lists

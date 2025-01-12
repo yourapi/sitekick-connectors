@@ -16,6 +16,6 @@ request:
 data: request.json()
 
 index:
-    url: data.url (str)
+    url: data.url -> str
 
 # In the future: store the screenshot on S3 backend.

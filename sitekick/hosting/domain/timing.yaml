@@ -1,11 +1,16 @@
 type: FloatInt  # Type of the data-form will be determined automatically in the future
 
+# include not working yet; workaround: call the function directly
 include:
     - homepage
 
-data: functions.hosting.timing(include.homepage.final_url)  # Data contains str repr for float and int; convert them where applicable
+homepage: << functions.sitekick.hosting.homepage(domain) >>
 
+
+data: << functions.sitekick.hosting.website_response_times(homepage.final_url) >>  # Data contains str repr for float and int; convert them where applicable
+
+# The data types at the index are stripped when using the connector; they are only used when parsing the definition
 index:
-    ttfb: data.ttfb (float)
-    ttfb_ex_dns: data.ttfb_ex_dns (float)
-    ttlb: data.ttlb (float)
+    ttfb: << data.ttfb >> -> float
+    ttfb_ex_dns: << data.ttfb_ex_dns >> -> float
+    ttlb: << data.ttlb >> -> float

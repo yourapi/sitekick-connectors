@@ -1,11 +1,14 @@
-type: Json  # Type of the data-form will be determined automatically in the future
+type: StrDateInt  # Type of the data-form will be determined automatically in the future
 
-data: << functions.sitekick.hosting.whois(domain) >>
+data: << functions.sitekick.hosting.analyze_certificate(domain) >>
 
 index:
-    name_servers_generic1: << data.name_servers_generic_1 >> -> str
-    whois_server: << data.whois_server >> -> str
-    expiration_date: << data.expiration_date >> -> datetime
+    issuer: << data.issuer >> -> str
+    hostname: << data.hostname >> -> str
+    common_name: << data.commonName >> -> str
+    ip: << data.ip >> -> str
+    valid_from: << data.validFrom >> -> datetime
+    valid_to: << data.validTo >> -> datetime
 
 json: << data >>
 # Stored in the database, very limited querying (only equality/missing/present), presence in lists
