@@ -1,0 +1,11 @@
+# Check whether the status of a website is active, if so: check.
+# At this moment, an include does not work. so have to get the code from the category connector :-(
+
+type: StrInt
+
+domain: "<< f.connectors.include(self.included.domain.links.self) + '/category?refresh=now' >>"
+
+
+index:
+    validated_at: << data.ip >> -> datetime
+    value: << data.asn >> -> str

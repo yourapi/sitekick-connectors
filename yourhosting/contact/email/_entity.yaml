@@ -12,6 +12,5 @@ key-names:
 attributes:
     type: StrInt
     index:
-        email: -> str
         user_id: -> str
         uuid: -> str

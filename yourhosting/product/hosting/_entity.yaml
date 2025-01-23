@@ -1,0 +1,16 @@
+# At this moment, EVERY item type MUST have its own renderer. It SHOULD be possible to just define an item type
+#  have the item-renderer be automatically connected by default.
+# So for bonus: add the class:
+# class Employee(ItemRenderer):
+#    ...
+# in the file sitekick/data/renderers/items/yourhosting/people.py
+
+key-names:
+    - user
+    - email
+
+attributes:
+    type: StrInt
+    index:
+        user_id: -> str
+        uuid: -> str

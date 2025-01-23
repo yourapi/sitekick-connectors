@@ -1,8 +1,0 @@
-# Check whether the bonus is validated, by having the related incentive check the result
-type: StrDateInt
-
-data: "<< f.http.request.get(f'https://ipapi.co/{ipaddress}/json').json() >>"
-
-index:
-    validated_at: << data.ip >> -> datetime
-    value: << data.asn >> -> str

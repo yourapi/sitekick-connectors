@@ -1,0 +1,16 @@
+# The key is the combination of
+attributes:
+    type: JsonStrInt
+
+relationships:
+    yourhosting/commercial/incentive:
+        cardinality:
+            # Cardinality can be 1-1, 1-inf, inf-1 and inf-inf and optional.
+            # (https://vertabelo.com/blog/cardinality-in-data-modeling/)
+            # The cardinality is indicated using the possible counts of the relation.
+            from: ">= 1"  # an incentive may refer to 1 or more actions
+            to: "1"  # an action MUST HAVE 1 incentive
+    yourhosting/contact/email:
+        cardinality:
+            from: ">= 0"  # an email may qualify for 0 or more incentives
+            to: "1"  # an incentive MUST refer to a single employee
