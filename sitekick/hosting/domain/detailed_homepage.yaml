@@ -1,24 +1,21 @@
-type: StrInt  # Type of the data-form will be determined automatically in the future
+type: JsonStrInt  # Type of the data-form will be determined automatically in the future
 
-data: << f.sitekick.hosting.homepage(domain) >>
+data: << f.sitekick.hosting.detailed_homepage(domain) >>
 
 index:
-    url: << data.url >> -> str
     final_url: << data.final_url >> -> str
-    final_domain: << data.final_domain >> -> str
     https: << data.https >> -> int
-    http_redirected: << data.redirect_number >> -> int
-    redirects: << data.redirects[0] if data.redirects else None >> -> int
-    domain_redirected: << data.domain_redirected >> -> int
-# index defines the fields in the record for immediate retrieval and extensive querying. Each field is indexed.
+    http_redirected: << data.http_redirected >> -> int
+    www_supported: << data.www_supported >> -> int
+    redirected_to_www: << data.redirected_to_www >> -> int
 
 summary:
-    final_url: << index.final_url >>
-    https: << index.https >>
+    final_url: << data.final_url >>
+    https: << data.https >>
 # summary defines the fields for the overview of a list of items. This way, some useful (limited) fields can be
 # displayed in a list of items. When additional fields should be displayed, they are fetched using an (expensive) join.
 
-json: null
+json: << data >>
 # Stored in the database, very limited querying (only equality/missing/present)
 
 file: null

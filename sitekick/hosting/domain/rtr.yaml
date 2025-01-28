@@ -1,0 +1,27 @@
+type: StrInt  # Type of the data-form will be determined automatically in the future
+
+header:
+    Authorization: "ApiKey <<<--gAAAAABnmKwrI6ckc-d1KEevFVa9WMjvA8ZhUzpb55zK395F1hPZDlbYcjQmYLX9Z9O
+qF66_SDmgX85a9-YsWKNM4KKh86AFBchEwndx-o_v7hkRwY8NVYNxt8FljAST97ONpBRGNHzAhShuDtlDK4f67Tc4hjs0gj66o3
+XqcmsjSWAALdKbCa8pAvkxVY40YBII7tyAnZE4-->>>"
+
+url: << f"https://api.yoursrs.com/v2/domains/{domain}/check" >>
+
+# Check availability of a domain name. Do the general check on availability
+data: << f.http.request.get(url, headers=header).json() >>
+
+index:
+    message: << data.message >> -> str
+    type: << data.type >> -> str
+    available: << data.available >> -> int
+    premium: << data.premium >> -> int
+
+json: null
+# Stored in the database, very limited querying (only equality/missing/present), presence in lists
+
+file: null
+# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
+# is specified, are automatically named and optionally named explicitly
+
+transient: null
+# Not stored, only used for the current session, no querying, no presence in lists
