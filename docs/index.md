@@ -116,7 +116,14 @@ The next parts are:
 * subject: specific subject, like `domain`, `server`
 * key: the unique key for the item, can be a unique index like `3141592`, uuid or 'natural' key, like `yourhosting.nl`.
 
- 
-  /yourhosting/hosting/domain/yourhosting.nl/timing?refresh=now`
+General data:
+https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl
+https://eu.sitekick.online/yourhosting/hosting/domain/119396
+
+One data area:
+https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/timing
+
+Force refresh of the data:
+https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/dns?refresh=now
 
 
