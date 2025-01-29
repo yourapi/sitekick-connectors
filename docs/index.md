@@ -117,11 +117,15 @@ The next parts are:
 * key: the unique key for the item, can be a unique index like `3141592`, uuid or 'natural' key, like `yourhosting.nl`.
 
 General data:
-https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl
-https://eu.sitekick.online/yourhosting/hosting/domain/119396
+[https://.../domain/yourhosting.nl](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl)
+Which is equivalent to using the database-id for this domain:
+[https://.../domain/119396](https://eu.sitekick.online/yourhosting/hosting/domain/119396)
+Every item has a uuid to enable publication in a semi-secure way:
+[https://.../domain/b56f5dc3-912e-b14f-3612-2e260cd6a9ce](https://eu.sitekick.online/yourhosting/hosting/domain/b56f5dc3-912e-b14f-3612-2e260cd6a9ce)
 
 One data area:
-https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/timing
+[https://.../domain/yourhosting.nl/timing](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/timing)
+When a 
 
 Force refresh of the data:
 https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/dns?refresh=now
