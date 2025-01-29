@@ -125,5 +125,3 @@ https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/timing
 
 Force refresh of the data:
 https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/dns?refresh=now
-
-
