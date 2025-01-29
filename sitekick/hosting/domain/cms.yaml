@@ -1,0 +1,12 @@
+type: JsonStrInt  # Type of the data-form will be determined automatically in the future
+
+include:
+    - homepage
+
+data: functions.hosting.get_cms(include.homepage.final_url)
+
+json: data
+
+index:
+    cms: data.cms -> str
+    # Add some extra fields about versions etc

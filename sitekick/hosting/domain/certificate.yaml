@@ -1,0 +1,21 @@
+type: StrDateInt  # Type of the data-form will be determined automatically in the future
+
+data: << functions.sitekick.hosting.analyze_certificate(domain) >>
+
+index:
+    issuer: << data.issuer >> -> str
+    hostname: << data.hostname >> -> str
+    common_name: << data.commonName >> -> str
+    ip: << data.ip >> -> str
+    valid_from: << data.validFrom >> -> datetime
+    valid_to: << data.validTo >> -> datetime
+
+json: << data >>
+# Stored in the database, very limited querying (only equality/missing/present), presence in lists
+
+file: null
+# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
+# is specified, are automatically named and optionally named explicitly
+
+transient: null
+# Not stored, only used for the current session, no querying, no presence in lists

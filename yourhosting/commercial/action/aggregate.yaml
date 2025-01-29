@@ -1,0 +1,7 @@
+# Count the unique actions
+type: JsonStrInt
+
+data: "<< f.aggregates.actions(self.included.actions) >>"
+
+json: << data >>
+

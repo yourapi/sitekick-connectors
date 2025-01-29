@@ -1,0 +1,4 @@
+attributes:
+    type: StrInt
+    index:
+        topic: -> str  # Topic of the incentive

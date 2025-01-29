@@ -1,0 +1,38 @@
+type: Json  # Type of the data-form will be determined automatically in the future
+
+domdetailer:
+    url: "https://domdetailer.com/api/checkDomain.php"
+    params:
+        app: 'sitekick'
+        apikey: '<<<--gAAAAABnOwjPClegLfoELkk7NEiWNpqmeMhGJPisrzpVWx6ja51jqIL_RzcIxLRqRc42AJVTHBjoFPGy1FT5l9Euwpvl7_15tg==-->>>'
+        domain: << domain >>
+
+
+keywords:
+    url: "https://api.keywordseverywhere.com/v1/get_keyword_data"
+    body:
+        dataSource: cli
+        currency: eur
+        "kw[]": << ','.join(f.sitekick.hosting.make_keywords(domain=domain)) >>
+    headers:
+        Authorization: "Bearer <<<--gAAAAABnmefZ1shUYA8kc9wYUZJNwXtaPdKLGxjR-tWoPZGxK4VLykFJU2wCbOisS9-
+-a4Sd4DlZFZAeF8YFENb-J7qP1dsTluWTwOikczx9hNtGzblmyTA=-->>>"
+        Accept: application/json
+
+include:
+    domdetailer: << functions.convert.convert_type(f.http.request.get(url=domdetailer.url, params=domdetailer.params).json(), int, float) >>  # Data contains str repr for float and int; convert them where applicable
+    keywords: << f.http.request.post(keywords.url, data=keywords.body, headers=keywords.headers).json() >>
+    whois: << functions.sitekick.hosting.whois(domain) >>
+
+result: << functions.sitekick.hosting.domain_value(domain, include.whois, include.keywords, include.domdetailer) >>
+
+json:
+    value: << result.domainvalue_num >>
+    value_rounded: << result.domainvalue_num_rounded >>
+    has_digit: << result.has_digit >>
+    has_hyphen: << result.has_hyphen >>
+    mozrank: << result.mozRank >>
+    searchvol: << result.searchvol>>
+    words: << len(result.searchword) >>
+    tld: << result.tld >>
+    creation_date: << result.creation_date >>

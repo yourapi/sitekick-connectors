@@ -1,0 +1,12 @@
+# Get the data about the supplied server, using its ip-address
+type: JsonStrInt
+
+data: "<< f.http.request.get(f'https://ipapi.co/{ipaddress}/json').json() >>"
+
+json: << data >>
+
+#index:
+#    ip: << data.ip >> -> str
+#    asn: << data.asn >> -> str
+#    latitude: << 1_000_000 * data.latitude >> -> int
+#    longitude: << 1_000_000 * data.longitude >> -> int

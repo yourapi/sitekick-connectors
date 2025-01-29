@@ -1,0 +1,26 @@
+type: JsonStrInt  # Type of the data-form will be determined automatically in the future
+
+data: << f.sitekick.hosting.detailed_homepage(domain) >>
+
+index:
+    final_url: << data.final_url >> -> str
+    https: << data.https >> -> int
+    http_redirected: << data.http_redirected >> -> int
+    www_supported: << data.www_supported >> -> int
+    redirected_to_www: << data.redirected_to_www >> -> int
+
+summary:
+    final_url: << data.final_url >>
+    https: << data.https >>
+# summary defines the fields for the overview of a list of items. This way, some useful (limited) fields can be
+# displayed in a list of items. When additional fields should be displayed, they are fetched using an (expensive) join.
+
+json: << data >>
+# Stored in the database, very limited querying (only equality/missing/present)
+
+file: null
+# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
+# is specified, are automatically named and optionally named explicitly
+
+transient: null
+# Not stored, only used for the current session, no querying, no presence in lists

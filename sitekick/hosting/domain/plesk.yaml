@@ -1,0 +1,17 @@
+type: JsonStrInt  # Type of the data-form will be determined automatically in the future
+
+index: # Index of the data-form, for querying and data-analysis.
+    majesticCF: data.majesticCF -> int
+    majesticTF: data.majesticTF -> int
+    mozRank: data.mozRank -> int
+    mozLinks: data.mozLinks-> int
+
+json: data
+# Stored in the database, very limited querying (only equality/missing/present), presence in lists
+
+file: null
+# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
+# is specified, are automatically named and optionally named explicitly
+
+transient: null
+# Not stored, only used for the current session, no querying, no presence in lists

@@ -1,0 +1,29 @@
+key-names:
+    - ip
+    - address
+    - ip-address
+    - ip_address
+    - ipaddress  # A server can be identified by its IP-address
+
+attributes:
+    type: JsonStrInt
+    index:
+        name: -> str
+        brand: -> str
+        cpus: -> int
+        mem: -> int
+        disks: -> int
+
+# Relations don't have to be defined on both ends; domains are sufficient. If definition is repeated, MUST BE identical,
+# otherwise, an exception is raised.
+relationships:
+    sitekick/hosting/platform:
+        cardinality:
+            # Cardinality can be 1-1, 1-inf, inf-1 and inf-inf and optional.
+            # (https://vertabelo.com/blog/cardinality-in-data-modeling/)
+            # The cardinality is indicated using the possible counts of the relation.
+            from: ">= 0"  # One platform can have 0 or more servers
+            to: "(0, 1)"  # a server has an optional platform
+        name:
+            from: hosted-on
+            to: hosts

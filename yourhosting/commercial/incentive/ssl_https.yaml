@@ -1,0 +1,21 @@
+# Check whether the website has a secure https connection. Also get the issuer of the ssl certificate.
+
+type: StrInt
+
+domain: << self.included.domain.data.key >>
+homepage: << f.sitekick.hosting.homepage(domain) >>
+certificate: << functions.sitekick.hosting.analyze_certificate(domain) >>
+details : << f.http.request.get(self.links.self + '/ssl_https').json() >>
+
+index:
+    issuer: << certificate.issuer >> -> str
+    valid_from: << certificate.validFrom >> -> str
+    valid_to: << certificate.validTo >> -> str
+    final_url: << homepage.final_url >> -> str
+    https: << homepage.https >> -> int
+    domain_redirected: << homepage.domain_redirected >> -> int
+    valid: << f.yourhosting.commercial.incentives.is_ssl_https_valid(self, details) >> -> int
+    bonus: << f.yourhosting.commercial.incentives.ssl_https_bonus(self, details) >> -> int
+
+refresh:
+    every: << "day" if not index.https else "year" >>

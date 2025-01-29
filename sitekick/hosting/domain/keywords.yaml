@@ -1,0 +1,34 @@
+params:
+    keyword: null
+    keywords: ""
+
+type: Json  # Type of the data-form will be determined automatically in the future
+
+
+url: "https://api.keywordseverywhere.com/v1/get_keyword_data"
+
+headers:
+    Authorization: "Bearer <<<--gAAAAABnmefZ1shUYA8kc9wYUZJNwXtaPdKLGxjR-tWoPZGxK4VLykFJU2wCbOisS9-
+-a4Sd4DlZFZAeF8YFENb-J7qP1dsTluWTwOikczx9hNtGzblmyTA=-->>>"
+    Accept: application/json
+
+body:
+    dataSource: cli
+    currency: eur
+    "kw[]": << ','.join(f.sitekick.hosting.make_keywords(keyword, keywords, domain=domain)) >>
+
+data: << f.http.request.post(url, data=body, headers=headers).json() >>
+
+#data1: functions.convert.convert_type(data1, float, int)  # Data contains str repr for float and int; convert them where applicable
+
+
+json:
+    data: << data.data >>  # Only get the data content; ignore 'credits' and 'time' fields
+# Stored in the database, very limited querying (only equality/missing/present), presence in lists
+
+file: null
+# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
+# is specified, are automatically named and optionally named explicitly
+
+transient: null
+# Not stored, only used for the current session, no querying, no presence in lists

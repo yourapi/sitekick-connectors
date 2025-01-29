@@ -1,0 +1,37 @@
+params:
+    dns_type: common
+    url: "http://httpbin.org/get"
+
+type: JsonStrInt  # Type of the data-form will be determined automatically in the future
+
+substitutions:
+    awsdns\-\d+: awsdns
+    (.*)\.amazonaws\.com: '{}.amazonaws.org'
+    sohosted\d+: sohosted
+
+test1: << f.http.request.ident(f.http.request.get(f.http.request.ident(url) + '?foo=bar').json(strict=False)) >>
+test1c: "<< json.loads(str(json.dumps(f.http.request.get(json.loads(json.dumps({'url': str(url.strip().lower())}))['url'] + '?foo=bar'.strip()).json(strict=False)))) >>"
+test1a: "<< json.loads(str(json.dumps(f.http.request.get(json.loads(json.dumps({'url': str(url.strip().lower())})).get('url') + '?foo=bar'.strip()).json(strict=False)))) >>"
+test1b: "<< json.loads(str(json.dumps(f.http.request.get(json.loads(json.dumps({'url': str(url.strip().lower())}))['url'] + '?foo=bar'.strip()).json(strict=False)))) >>"
+test2: << f.http.request.get(url) >>
+test2a: 1 is << 1 / 100 + 2 / 100 + .03 + 4 / 100 >>, 2 is << 2 * (1 / 100 + 2 / 100 + .03 + 4 / 100) >>, 3 is << (100 * (1 / 100 + 2 / 100 + .03 + 4 / 100)) ** 3 >>
+test3: << f.http.request.get(url) >>
+test4c: << (await f.http.request.get(url)).json() >>
+test4a: << (await f.http.request.get(url)).json() >>
+test5: << test3.json() >>
+test6:
+    test6-1:
+        test6-1-1: << test3.json() >>
+        test6-1-2: << test2a >>
+
+json:
+    test-b: << test1.headers.Host >>
+    test11-21:
+        host: << test1.headers.Host >>
+        User-Agent: << test1a.headers['User-Agent'] >>
+        all: host is << test1b.headers.Host >> and UA is << test1c.headers['User-Agent'] >> !
+    test-a: << test1a.headers['User-Agent'] >>
+    test6:
+        test6-1-1: << test6['test6-1']['test6-1-1']['headers']['Host'] >>
+    test2:
+        test2a: << test2a >>
