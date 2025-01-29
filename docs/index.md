@@ -117,17 +117,17 @@ The next parts are:
 * key: the unique key for the item, can be a unique index like `3141592`, uuid or 'natural' key, like `yourhosting.nl`.
 
 General data:
-[https://.../domain/yourhosting.nl](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl)
+* [https://.../domain/yourhosting.nl](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl)
 Which is equivalent to using the database-id for this domain:
-[https://.../domain/119396](https://eu.sitekick.online/yourhosting/hosting/domain/119396)
+* [https://.../domain/119396](https://eu.sitekick.online/yourhosting/hosting/domain/119396)
 Every item has a uuid to enable publication in a semi-secure way:
-[https://.../domain/b56f5dc3-912e-b14f-3612-2e260cd6a9ce](https://eu.sitekick.online/yourhosting/hosting/domain/b56f5dc3-912e-b14f-3612-2e260cd6a9ce)
+* [https://.../domain/b56f5dc3-912e-b14f-3612-2e260cd6a9ce](https://eu.sitekick.online/yourhosting/hosting/domain/b56f5dc3-912e-b14f-3612-2e260cd6a9ce)
 
-One specific data point:
-[https://.../domain/yourhosting.nl/timing](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/timing)
-[https://.../domain/yourhosting.nl/dns](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/dns)
+Some specific data points:
+* [https://.../domain/yourhosting.nl/timing](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/timing)
+* [https://.../domain/yourhosting.nl/dns](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/dns)
 When a data point has not been refreshed, it will be refreshed on first access.
 
 Force refresh of the data:
-[https://.../domain/yourhosting.nl/timing?refresh=now](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/timing?refresh=now)
+* [https://.../domain/yourhosting.nl/timing?refresh=now](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/timing?refresh=now)
 As you can see, the data for this data point are refreshed on every request.
