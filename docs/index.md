@@ -123,9 +123,11 @@ Which is equivalent to using the database-id for this domain:
 Every item has a uuid to enable publication in a semi-secure way:
 [https://.../domain/b56f5dc3-912e-b14f-3612-2e260cd6a9ce](https://eu.sitekick.online/yourhosting/hosting/domain/b56f5dc3-912e-b14f-3612-2e260cd6a9ce)
 
-One data area:
+One specific data point:
 [https://.../domain/yourhosting.nl/timing](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/timing)
-When a 
+[https://.../domain/yourhosting.nl/dns](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/dns)
+When a data point has not been refreshed, it will be refreshed on first access.
 
 Force refresh of the data:
-https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/dns?refresh=now
+[https://.../domain/yourhosting.nl/timing?refresh=now](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/timing?refresh=now)
+As you can see, the data for this data point are refreshed on every request.
