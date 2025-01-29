@@ -5,7 +5,6 @@ type: StrInt
 
 domain: "<< f.connectors.include(self.included.domain.links.self) + '/category?refresh=now' >>"
 
-
 index:
     validated_at: << data.ip >> -> datetime
     value: << data.asn >> -> str

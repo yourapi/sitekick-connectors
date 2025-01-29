@@ -67,6 +67,22 @@ Info on redirect from http to https, redirect from no subdomain to www etc.
 
 #### domdetailer
 
+#### domainvalue
+The estimated financial value of the domain, based on popularity and backlinks, with a proprietary algorithm. Returns:
+* value: the estimated semi-precise value in euros, like _4540842_
+* value_rounded: the estimated value, in two significant digits, like _4500000_
+* has_digit: is any digit in the domain name, true or false.
+* has_hyphen: is a hyphen present (which has a negative effect on the value), true or false
+* mozrank: the mozRank is an indicatoin of the quality and quantity of the backlinks, a logarithmic scale from 0 to 10
+* searchvol: the search volume for the domain name
+* words: number of identified separate words in the domain name
+* tld: the top level domain, without the dot, like _com_
+* creation_date: composite field with:
+  * date: date of creation, y-m-d, like _1999-05-19_
+  * total_days: the total numbers since creation, like _9387_
+  * years: number of years since creation
+  * months: and this number of months
+
 #### homepage
 
 Simple data on the homepage, basically homepage resolving based on a domain.
