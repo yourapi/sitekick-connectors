@@ -143,8 +143,8 @@ Some specific data points:
 * [https://.../domain/yourhosting.nl/timing](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/timing)
 * [https://.../domain/yourhosting.nl/dns](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/dns)
 * [https://.../domain/yourhosting.nl/domainvalue](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/domainvalue)
-When a data point has not been refreshed, it will be refreshed on first access.
+  When a data point has not been refreshed, it will be refreshed on first access.
 
 Force refresh of the data:
 * [https://.../domain/yourhosting.nl/timing?refresh=now](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/timing?refresh=now)
-As you can see, the data for this data point are refreshed on every request.
+  As you can see, the data for this data point are refreshed on every request.
