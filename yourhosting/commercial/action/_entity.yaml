@@ -1,6 +1,7 @@
 # The key is the combination of
 attributes:
     type: JsonStrInt
+    refresh: never
 
 relationships:
     yourhosting/commercial/incentive:

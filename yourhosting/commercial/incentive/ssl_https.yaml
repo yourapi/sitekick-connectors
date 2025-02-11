@@ -2,20 +2,19 @@
 
 type: StrInt
 
-domain: << self.included.domain.data.key >>
+domain: << self.attributes.domain >>
 homepage: << f.sitekick.hosting.homepage(domain) >>
-certificate: << functions.sitekick.hosting.analyze_certificate(domain) >>
-details : << f.http.request.get(self.links.self + '/ssl_https').json() >>
+certificate: << functions.sitekick.hosting.analyze_certificate(domain, attempts=1) >>
 
 index:
     issuer: << certificate.issuer >> -> str
     valid_from: << certificate.validFrom >> -> str
     valid_to: << certificate.validTo >> -> str
-    final_url: << homepage.final_url >> -> str
+    invalid: << certificate.invalid >> -> str
     https: << homepage.https >> -> int
     domain_redirected: << homepage.domain_redirected >> -> int
-    valid: << f.yourhosting.commercial.incentives.is_ssl_https_valid(self, details) >> -> int
-    bonus: << f.yourhosting.commercial.incentives.ssl_https_bonus(self, details) >> -> int
+    valid: << certificate and not certificate.invalid >> -> int
+    bonus: << 5 >> -> int
 
 refresh:
-    every: << "day" if not index.https else "year" >>
+    every: << "minute" if not index.valid else "3 months" >>

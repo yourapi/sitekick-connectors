@@ -11,6 +11,7 @@ attributes:
     index:
         tld: << functions.hosting.get_tld(self.key) >> -> str  # Automatic calculation
         sld: << functions.hosting.get_sld(self.key) >> -> str  # Automatic calculation
+    refresh: never
 
 relationships:
     sitekick/hosting/platform:
