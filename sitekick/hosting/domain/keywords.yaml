@@ -15,7 +15,7 @@ headers:
 body:
     dataSource: cli
     currency: eur
-    "kw[]": << ','.join(f.sitekick.hosting.make_keywords(keyword, keywords, domain=domain)) >>
+    "kw[]": << ','.join(functions.hosting.make_keywords(keyword, keywords, domain=domain)) >>
 
 data: << f.http.request.post(url, data=body, headers=headers).json() >>
 

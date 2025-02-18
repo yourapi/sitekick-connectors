@@ -1,6 +1,6 @@
 type: JsonStrInt  # Type of the data-form will be determined automatically in the future
 
-data: << functions.sitekick.hosting.whois(domain) >>
+data: << functions.hosting.whois(domain) >>
 
 index:
     name_servers_generic1: << data.name_servers_generic_1 >> -> str

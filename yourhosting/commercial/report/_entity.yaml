@@ -1,0 +1,4 @@
+attributes:
+  type: JsonStrInt
+  refresh:
+    every: night

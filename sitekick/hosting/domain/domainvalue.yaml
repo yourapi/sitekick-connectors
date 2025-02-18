@@ -13,7 +13,7 @@ keywords:
     body:
         dataSource: cli
         currency: eur
-        "kw[]": << ','.join(f.sitekick.hosting.make_keywords(domain=domain)) >>
+        "kw[]": << ','.join(functions.hosting.make_keywords(domain=domain)) >>
     headers:
         Authorization: "Bearer <<<--gAAAAABnmefZ1shUYA8kc9wYUZJNwXtaPdKLGxjR-tWoPZGxK4VLykFJU2wCbOisS9-
 -a4Sd4DlZFZAeF8YFENb-J7qP1dsTluWTwOikczx9hNtGzblmyTA=-->>>"
@@ -22,9 +22,9 @@ keywords:
 include:
     domdetailer: << functions.convert.convert_type(f.http.request.get(url=domdetailer.url, params=domdetailer.params).json(), int, float) >>  # Data contains str repr for float and int; convert them where applicable
     keywords: << f.http.request.post(keywords.url, data=keywords.body, headers=keywords.headers).json() >>
-    whois: << functions.sitekick.hosting.whois(domain) >>
+    whois: << functions.hosting.whois(domain) >>
 
-result: << functions.sitekick.hosting.domain_value(domain, include.whois, include.keywords, include.domdetailer) >>
+result: << functions.hosting.domain_value(domain, include.whois, include.keywords, include.domdetailer) >>
 
 json:
     value: << result.domainvalue_num >>

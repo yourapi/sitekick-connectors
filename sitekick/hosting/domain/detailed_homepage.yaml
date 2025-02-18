@@ -1,6 +1,6 @@
 type: JsonStrInt  # Type of the data-form will be determined automatically in the future
 
-data: << f.sitekick.hosting.detailed_homepage(domain) >>
+data: << functions.hosting.detailed_homepage(domain) >>
 
 index:
     final_url: << data.final_url >> -> str

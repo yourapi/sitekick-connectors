@@ -207,7 +207,7 @@ category_keywords:
     keywords: published,yet,has,offline,not,this,site,been
 
 domain: << self.attributes.domain >>
-data: << functions.sitekick.hosting.category_by_content(domain, category_keywords) >>
+data: << functions.hosting.category_by_content(domain, category_keywords) >>
 
 index:
     category: << data.category >> -> str
@@ -216,4 +216,4 @@ index:
     valid: << 1 if data.category == 'active' else 0 >> -> int
 
 refresh:
-    every: << "minute" if not index.valid else "3 months" >>
+    every: << "day" if not index.valid else "3 months" >>

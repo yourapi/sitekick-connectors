@@ -1,6 +1,6 @@
 type: StrDateInt  # Type of the data-form will be determined automatically in the future
 
-data: << functions.sitekick.hosting.analyze_certificate(domain, attempts=1) >>
+data: << functions.hosting.analyze_certificate(domain, attempts=1) >>
 
 index:
     issuer: << data.issuer >> -> str

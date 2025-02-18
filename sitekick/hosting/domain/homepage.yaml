@@ -1,6 +1,6 @@
 type: StrInt  # Type of the data-form will be determined automatically in the future
 
-data: << f.sitekick.hosting.homepage(domain) >>
+data: << functions.hosting.homepage(domain) >>
 
 index:
     url: << data.url >> -> str

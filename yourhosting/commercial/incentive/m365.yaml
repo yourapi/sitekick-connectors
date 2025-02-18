@@ -1,0 +1,15 @@
+# Check whether the website has a secure https connection. Also get the issuer of the ssl certificate.
+
+type: StrInt
+
+domain: << self.attributes.domain >>
+dns: << functions.hosting.nslookup(domain, 'mx') >>
+
+index:
+  mx: << ', '.join(dns.generic.mx) >> -> str
+  mx1: << dns.generic.mx1 >> -> str
+  mx1_short: << dns.generic.mx1_short >> -> str
+  valid: << any(mx.endswith('.mail.protection.outlook.com') for mx in dns.generic.mx) >> -> int
+
+refresh:
+  every: << "day" if not index.valid else "3 months" >>

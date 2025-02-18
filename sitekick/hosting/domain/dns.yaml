@@ -8,7 +8,7 @@ substitutions:
     (.*)\.amazonaws\.com: '{}.amazonaws.org'
     sohosted\d+: sohosted
 
-dns: << f.sitekick.hosting.nslookup(domain, dns_type, substitutions) >>
+dns: << functions.hosting.nslookup(domain, dns_type, substitutions) >>
 
 index: # Index of the data-form, for querying and data-analysis.
     a1: << dns.generic.a1 >> -> str  # Currently, the type of the variable is explicit; will be derived from sample data in the future.

@@ -204,7 +204,7 @@ category_keywords:
 -   category: initiated
     keywords: published,yet,has,offline,not,this,site,been
 
-data: << functions.sitekick.hosting.category_by_content(domain, category_keywords) >>
+data: << functions.hosting.category_by_content(domain, category_keywords) >>
 
 index:
     category: << data.category >> -> str

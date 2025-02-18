@@ -1,6 +1,16 @@
 attributes:
   type: JsonStrInt
   index:
+    # SHOULD BE changed to something like:
+#    year: << attributes.json.year >> -> int  # for easy aggregation of incentives. Can disappear when grouping by date
+#    month: << attributes.json.month >> -> int
+#    week: << attributes.json.week >> -> int
+#    points: << attributes.json.points >> -> int
+#    action: << attributes.json.action >> -> str
+#    email: << attributes.json.email >> -> str
+#    domain: << attributes.json.domain >> -> str
+#    topic: << attributes.json.topic >> -> str
+
     year: -> int  # for easy aggregation of bonuses
     month: -> int
     week: -> int

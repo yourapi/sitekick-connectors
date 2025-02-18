@@ -1,11 +1,6 @@
 key-names:
     - domain
 
-properties:
-    foo:
-        bar: 1
-        baz: 42
-
 attributes:
     type: JsonStrInt
     index:
