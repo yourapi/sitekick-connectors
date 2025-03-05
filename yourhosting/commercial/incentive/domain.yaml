@@ -17,11 +17,10 @@ tlds:
   - email
   - tel
 
-availability: << functions.hosting.available_tlds(domain, tlds) >>
-registered_domains: << functions.yourhosting.commercial.incentives.registered_domains(self, availability) >>
+registered_domains: << functions.yourhosting.commercial.incentives.registered_domains(self) >>
 
 json:
-  availability: << availability >>
+  availability: << functions.hosting.available_tlds(domain, tlds) >>
   registered: << registered_domains >>
   valid: << len(registered_domains) > 0 >>
   count: << len(registered_domains) >>
