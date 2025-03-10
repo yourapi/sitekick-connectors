@@ -11,5 +11,7 @@ index:
   mx1_short: << dns.generic.mx1_short >> -> str
   valid: << any(mx.endswith('.mail.protection.outlook.com') for mx in dns.generic.mx) >> -> int
 
+set-incentive: << functions.yourhosting.commercial.incentives.set_incentive_points(self, index.valid) >>
+
 refresh:
   every: << "day" if not index.valid else "3 months" >>

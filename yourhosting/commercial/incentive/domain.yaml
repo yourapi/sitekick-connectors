@@ -25,7 +25,8 @@ json:
   valid: << len(registered_domains) > 0 >>
   count: << len(registered_domains) >>
 
-set-incentive: << functions.yourhosting.commercial.incentives.set_incentive_points(self, json.count) >>
+set-incentive: "<< functions.http.request.patch(self.links.self + '/attributes', json={'points': json.registered}) >>"
+#set-incentive: << functions.yourhosting.commercial.incentives.set_incentive_points(self, json.count) >>
 
 code:
   import:

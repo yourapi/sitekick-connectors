@@ -215,5 +215,7 @@ index:
     arguments: << data.arguments >> -> str
     valid: << 1 if data.category == 'active' else 0 >> -> int
 
+set-incentive: << functions.yourhosting.commercial.incentives.set_incentive_points(self, index.valid) >>
+
 refresh:
     every: << "day" if not index.valid else "3 months" >>

@@ -19,7 +19,6 @@ attributes:
     employee: -> str
     domain: -> str
     topic: -> str
-  refresh: never
 
 relationships:
   yourhosting/commercial/topic:

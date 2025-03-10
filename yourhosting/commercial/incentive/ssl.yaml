@@ -17,5 +17,7 @@ index:
     paid_provider: << not regex.fullmatch('\w+\d+', certificate.issuer) >> -> int
     # Let's encrypt has R10 or R11, migrating to E1 etc in the issuer name
 
+set-incentive: << functions.yourhosting.commercial.incentives.set_incentive_points(self, index.valid) >>
+
 refresh:
     every: << "day" if not index.valid else "3 months" >>
