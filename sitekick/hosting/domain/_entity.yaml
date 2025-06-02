@@ -23,3 +23,6 @@ relationships:
         name:
             from: server
             to: domains
+
+on_create:
+    include: "*"

@@ -6,15 +6,18 @@ include:
 
 homepage: << functions.hosting.homepage(domain) >>
 
-
-data: << functions.hosting.website_response_times(homepage.final_url) >>  # Data contains str repr for float and int; convert them where applicable
+# if does not work as expected; in Python it is lazy, but when an aasync function is dcalled, this is done always.
+data: << functions.hosting.website_response_times(homepage.final_url) if homepage.final_url else Empty >>  # Data contains str repr for float and int; convert them where applicable
 
 # The data types at the index are stripped when using the connector; they are only used when parsing the definition
 index:
   ttfb: << data.ttfb >> -> float
   ttfb_ex_dns: << data.ttfb_ex_dns >> -> float
+  connection_time: << data.conn_time >> -> float
   ttlb: << data.ttlb >> -> float
-
+  content_size: << min(round(data.content_size / 1024), 32767) >> -> int
+  speed: << min(round(data.speed / 1_048_576), 32767) >> -> int
+# TBD: check and limit the values for the specified types
 
 refresh:
-  every: ~month
+  every: 2 ~weeks@10-23

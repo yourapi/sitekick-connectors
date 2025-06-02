@@ -20,15 +20,30 @@ you can easily define the data to connect to.
 
 ### hosting|domain
 
-#### category
+#### status
 The category for the website, can be:
-* parked
-* initiated
-* installed
-* outdated
-* unreachable
-* forsale
-* active
+* not_registered: the domain is ont registered with a registrar.
+* no_whois: the domain is registered, but no whois data is available.
+* no_dns: the domain is registered, but no DNS data is provisioned.
+* no_a_record: the domain is registered, but no A-record is present.
+* no_nameserver: the domain is registered, but no nameserver entry is present in the DNS.
+* no_youronline_nameserver: the nameserver is not for any of the your.online brands
+* parked: standard landing page for the website, no active website.
+* initiated: the user has logged in and initiated building a website, but no further action was taken. User stopped after first step.
+* installed: the user installed a CMS, but did not place any non-standard content. Example is the `hello world` website.
+* outdated: active, but prehistoric in internet-time (like Microsoft Frontpage-edited)
+* unreachable: no response from the server
+* forsale: the user has placed a website for sale
+* active: a standard website is present, the user has placed content.
+* 
+* #### category
+* parked: standard landing page for the website, no active website.
+* initiated: the user has logged in and initiated building a website, but no further action was taken. User stopped after first step.
+* installed: the user installed a CMS, but did not place any non-standard content. Example is the `hello world` website.
+* outdated: active, but prehistoric in internet-time (like Microsoft Frontpage-edited)
+* unreachable: no response from the server
+* forsale: the user has placed a website for sale
+* active: a standard website is present, the user has placed content.
 
 #### certificate
 Data for the certificate, 
