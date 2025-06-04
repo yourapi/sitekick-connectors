@@ -5,7 +5,7 @@ header:
 qF66_SDmgX85a9-YsWKNM4KKh86AFBchEwndx-o_v7hkRwY8NVYNxt8FljAST97ONpBRGNHzAhShuDtlDK4f67Tc4hjs0gj66o3
 XqcmsjSWAALdKbCa8pAvkxVY40YBII7tyAnZE4-->>>"
 
-url: << f"https://api.yoursrs.com/v2/domains/{domain}/check" >>
+url: << f"https://api.yoursrs.com/v2/domains/{params.domain}/check" >>
 
 # Check availability of a domain name. Do the general check on availability
 data: << f.http.request.get(url, headers=header).json() >>

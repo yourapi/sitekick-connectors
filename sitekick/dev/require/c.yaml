@@ -1,0 +1,30 @@
+include:
+    - a
+    - b
+
+requires:
+    - a
+    - b
+
+params:
+    c1: << include.b.b1 >>
+    c2: << include.b.b2 >>
+
+type: StrInt  # Type of the data-form will be determined automatically in the future
+
+index: # Index of the data-form, for querying and data-analysis.
+    c1: << params.c1 >> -> int  # Currently, the type of the variable is explicit; will be derived from sample data in the future.
+    c2: << params.c2 >> -> int
+
+refresh:
+    every: << "1 week" if not index.a1 else "2 months" >>
+    #    crontab: "30 12 * */2 sun"
+    # Optionally, specify a crontab for fixed times.
+    # format is https://en.wikipedia.org/wiki/Cron
+
+file: null
+# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
+# is specified, are automatically named and optionally named explicitly
+
+transient: null
+# Not stored, only used for the current session, no querying, no presence in lists

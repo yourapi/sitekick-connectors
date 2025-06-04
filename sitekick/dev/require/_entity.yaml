@@ -1,0 +1,8 @@
+# At this moment, EVERY item type MUST have its own renderer. It SHOULD be possible to just define an item type
+# and have the item-renderer be automatically connected by default.
+key-names:
+    - required
+
+attributes:
+    type: JsonStrInt
+    refresh: never

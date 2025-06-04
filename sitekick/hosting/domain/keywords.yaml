@@ -15,7 +15,7 @@ headers:
 body:
     dataSource: cli
     currency: eur
-    "kw[]": << ','.join(functions.hosting.make_keywords(keyword, keywords, domain=domain)) >>
+    "kw[]": << ','.join(functions.hosting.make_keywords(keyword, keywords, domain=params.domain)) >>
 
 data: << f.http.request.post(url, data=body, headers=headers).json() >>
 

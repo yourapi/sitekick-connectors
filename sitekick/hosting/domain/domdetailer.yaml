@@ -4,7 +4,7 @@ url: "https://domdetailer.com/api/checkDomain.php"
 params:
     app: 'sitekick'
     apikey: '<<<--gAAAAABnOwjPClegLfoELkk7NEiWNpqmeMhGJPisrzpVWx6ja51jqIL_RzcIxLRqRc42AJVTHBjoFPGy1FT5l9Euwpvl7_15tg==-->>>'
-    domain: << domain >>
+    domain: << params.domain >>
 
 
 data: << functions.convert.convert_type(f.http.request.get(url=url, params=params).json(), int, float) >>  # Data contains str repr for float and int; convert them where applicable

@@ -2,7 +2,7 @@ type: JsonStrInt  # Type of the data-form will be determined automatically in th
 
 #prerequisite: << not rtr.available >>
 
-data: << functions.hosting.whois(domain) >>
+data: << functions.hosting.whois(params.domain) >>
 
 index:
     name_servers_generic1: << data.name_servers_generic_1 >> -> str

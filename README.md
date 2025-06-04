@@ -35,7 +35,7 @@ The category for the website, can be:
 * unreachable: no response from the server
 * forsale: the user has placed a website for sale
 * active: a standard website is present, the user has placed content.
-* 
+
 * #### category
 * parked: standard landing page for the website, no active website.
 * initiated: the user has logged in and initiated building a website, but no further action was taken. User stopped after first step.

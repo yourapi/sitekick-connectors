@@ -4,7 +4,7 @@ type: FloatInt  # Type of the data-form will be determined automatically in the 
 include:
   - homepage
 
-homepage: << functions.hosting.homepage(domain) >>
+homepage: << functions.hosting.homepage(params.domain) >>
 
 # if does not work as expected; in Python it is lazy, but when an aasync function is dcalled, this is done always.
 data: << functions.hosting.website_response_times(homepage.final_url) if homepage.final_url else Empty >>  # Data contains str repr for float and int; convert them where applicable

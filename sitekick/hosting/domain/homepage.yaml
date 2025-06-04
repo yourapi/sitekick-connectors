@@ -1,6 +1,6 @@
 type: StrInt  # Type of the data-form will be determined automatically in the future
 
-data: << functions.hosting.homepage(domain) >>
+data: << functions.hosting.homepage(params.domain) >>
 
 index:
     url: << data.url >> -> str
