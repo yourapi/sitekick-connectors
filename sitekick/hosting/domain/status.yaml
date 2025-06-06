@@ -228,4 +228,4 @@ index:
     slugs: << self.attributes.subscription.slugs >> -> str
 
 refresh:
-    every: << 'day' if index.category != 'active' else 'monthly' >>
+    every: << 'day' if index.category != 'active' else 'month' >>

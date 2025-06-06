@@ -2,6 +2,8 @@ type: StrDateInt  # Type of the data-form will be determined automatically in th
 
 data: << functions.hosting.analyze_certificate(params.domain, attempts=1) >>
 
+requires: << data.commonName >>
+
 index:
     issuer: << data.issuer >> -> str
     invalid: << data.invalid >> -> str

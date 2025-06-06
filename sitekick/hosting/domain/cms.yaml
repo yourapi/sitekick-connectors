@@ -1,7 +1,8 @@
 type: JsonStrInt  # Type of the data-form will be determined automatically in the future
 
-include:
-    - homepage
+include: homepage
+
+requires: << include.homepage.final_url >>
 
 data: functions.hosting.get_cms(include.homepage.final_url)
 

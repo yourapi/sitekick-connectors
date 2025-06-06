@@ -2,6 +2,8 @@ type: StrInt  # Type of the data-form will be determined automatically in the fu
 
 data: << functions.hosting.homepage(params.domain) >>
 
+requires: << data.final_url >>  # When no url, no use in storing a homepage.
+
 index:
     url: << data.url >> -> str
     final_url: << data.final_url >> -> str

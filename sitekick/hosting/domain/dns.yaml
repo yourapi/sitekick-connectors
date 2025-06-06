@@ -10,6 +10,8 @@ substitutions:
 
 dns: << functions.hosting.nslookup(params.domain, params.dns_type, substitutions) >>
 
+requires: << dns >>
+
 index: # Index of the data-form, for querying and data-analysis.
     a1: << dns.generic.a1 >> -> str  # Currently, the type of the variable is explicit; will be derived from sample data in the future.
     a_fqdn1: << dns.generic.a_fqdn1 >> -> str
