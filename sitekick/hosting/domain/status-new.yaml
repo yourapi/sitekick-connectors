@@ -8,15 +8,9 @@ include:
     - dns
 
 # Check availability of a domain name. Do the general check on availability
-registered: << f.hosting.domain_status(params.domain) >>
+registered: << not rtr.attributes.available >>
 
-whois: << functions.hosting.whois(params.domain) if registered == 'taken' else {} >>
-
-dns: << functions.hosting.nslookup(params.domain, 'common', substitutions) if registered == 'taken' else {} >>
-
-category: << functions.hosting.category_by_content(params.domain, category_keywords) if dns.generic.a1 else {} >>
-
-data: << functions.hosting.supercat(registered=registered, whois=whois, dns=dns, category=category) >>
+data: << functions.hosting.supercat(registered=registered, whois=include.whois, dns=include.dns, category=include.category) >>
 
 index:
     category: << data.category >> -> str
