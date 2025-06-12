@@ -1,0 +1,12 @@
+type: Json  # Type of the data-form will be determined automatically in the future
+
+include: homepage
+
+content: << functions.hosting.content(include.homepage.final_url) >>
+
+json: << content >>
+# json is waay too large; typically should move to file storage.
+
+file: << content >>
+# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
+# is specified, are automatically named and optionally named explicitly

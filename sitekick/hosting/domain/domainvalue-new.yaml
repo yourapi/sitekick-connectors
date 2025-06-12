@@ -1,0 +1,19 @@
+type: Json  # Type of the data-form will be determined automatically in the future
+
+include:
+    - domdetailer
+    - keywords
+    - whois
+
+result: << functions.hosting.domain_value(params.domain, include.whois, include.keywords, include.domdetailer) >>
+
+json:
+    value: << result.domainvalue_num >>
+    value_rounded: << result.domainvalue_num_rounded >>
+    has_digit: << result.has_digit >>
+    has_hyphen: << result.has_hyphen >>
+    mozrank: << result.mozRank >>
+    searchvol: << result.searchvol>>
+    words: << len(result.searchword) >>
+    tld: << result.tld >>
+    creation_date: << result.creation_date >>
