@@ -7,10 +7,7 @@ include:
     - whois
     - dns
 
-# Check availability of a domain name. Do the general check on availability
-registered: << not include.rtr.attributes.available >>
-
-data: << functions.hosting.supercat(registered=registered, whois=include.whois, dns=include.dns, category=include.category) >>
+data: << functions.hosting.supercat(registered=include.rtr, whois=include.whois, dns=include.dns, category=include.category) >>
 
 index:
     category: << data.category >> -> str
@@ -19,4 +16,4 @@ index:
     slugs: << self.attributes.subscription.slugs >> -> str
 
 refresh:
-    every: << 'day' if index.category != 'active' else 'month' >>
+    every: << 'month' if index.category != 'active' else '6 months' >>

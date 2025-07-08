@@ -1,30 +1,11 @@
 type: Json  # Type of the data-form will be determined automatically in the future
 
-domdetailer:
-    url: "https://domdetailer.com/api/checkDomain.php"
-    params:
-        app: 'sitekick'
-        apikey: '<<<--gAAAAABnOwjPClegLfoELkk7NEiWNpqmeMhGJPisrzpVWx6ja51jqIL_RzcIxLRqRc42AJVTHBjoFPGy1FT5l9Euwpvl7_15tg==-->>>'
-        domain: << params.domain >>
+include:
+    - domdetailer
+    - keywords
+    - whois
 
-
-keywords:
-    url: "https://api.keywordseverywhere.com/v1/get_keyword_data"
-    body:
-        dataSource: cli
-        currency: eur
-        "kw[]": << ','.join(functions.hosting.make_keywords(domain=params.domain)) >>
-    headers:
-        Authorization: "Bearer <<<--gAAAAABnmefZ1shUYA8kc9wYUZJNwXtaPdKLGxjR-tWoPZGxK4VLykFJU2wCbOisS9-
--a4Sd4DlZFZAeF8YFENb-J7qP1dsTluWTwOikczx9hNtGzblmyTA=-->>>"
-        Accept: application/json
-
-args:
-    domdetailer: << functions.convert.convert_type(f.http.request.get(url=domdetailer.url, params=domdetailer.params).json(), int, float) >>  # Data contains str repr for float and int; convert them where applicable
-    keywords: << f.http.request.post(keywords.url, data=keywords.body, headers=keywords.headers).json() >>
-    whois: << functions.hosting.whois(params.domain) >>
-
-result: << functions.hosting.domain_value(params.domain, args.whois, args.keywords, args.domdetailer) >>
+result: << functions.hosting.domain_value(params.domain, include.whois, include.keywords, include.domdetailer) >>
 
 json:
     value: << result.domainvalue_num >>

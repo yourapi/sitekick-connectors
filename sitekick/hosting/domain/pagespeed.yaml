@@ -1,0 +1,32 @@
+type: StrInt  # Type of the data-form will be determined automatically in the future
+
+key: "<<<--gAAAAABoY94fgSKMgQ9OANy7oF7lt_s4RpxZZC4xldMEE-pHweWM50Ku0GqDYvzYqard7lhbgmYAhNw5h9YIKkn2WnX7x-S3A4uVbKkNxqvRe
+vH9zTHNyF5-pojlzW27-j7zKLAEtQEF-->>>"
+
+include: homepage
+
+requires: include.homepage.final_url
+
+url: << f"https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={include.homepage.final_url}&key={key}&category=ACCESSIBILITY&category=BEST_PRACTICES&category=PERFORMANCE&category=SEO" >>
+
+# Get the Google PSI data; in this connector, only keep the main categories
+data_desktop: << f.http.request.get(url + '&strategy=DESKTOP').json() >>
+data_mobile: << f.http.request.get(url + '&strategy=MOBILE').json() >>
+
+categories: << data.lighthouseResult.categories >>
+
+index:
+    performance: << categories.performance.score * 100 >> -> int
+    accessibility: << categories.accessibility.score * 100 >> -> int
+    best-practices: << categories["best-practices"].score * 100 >> -> int
+    seo: << categories.seo.score * 100 >> -> int
+
+json: null
+# Stored in the database, very limited querying (only equality/missing/present), presence in lists
+
+file: null
+# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
+# is specified, are automatically named and optionally named explicitly
+
+transient: null
+# Not stored, only used for the current session, no querying, no presence in lists

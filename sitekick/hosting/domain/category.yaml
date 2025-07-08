@@ -2,6 +2,8 @@ type: StrInt  # Type of the data-form will be determined automatically in the fu
 
 include: homepage
 
+requires: << include.homepage.final_url >>
+
 category_keywords:
 -   category: initiated
     keywords: automate,dns,linkedin,user-friendly,domains,automation,hosting,gui,generated,websites

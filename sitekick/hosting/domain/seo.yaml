@@ -1,0 +1,12 @@
+type: Json  # Type of the data-form will be determined automatically in the future
+
+include: homepage
+
+seo: "https://github.com/sethblack/python-seo-analyzer"  # run in docker.
+
+json: << seo.summary >>
+# json is waay too large; typically should move to file storage.
+
+file: << seo >>
+# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
+# is specified, are automatically named and optionally named explicitly

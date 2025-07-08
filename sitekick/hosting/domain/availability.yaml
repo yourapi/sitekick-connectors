@@ -1,0 +1,12 @@
+type: Json  # Type of the data-form will be determined automatically in the future
+
+params:
+    tlds: "eu com be de me net nu org online"
+
+json:
+    availability: << functions.hosting.available_tlds(params.domain, params.tlds) >>
+
+refresh: on-demand
+
+# Transient does not store the result and always refreshes when requested; the used mechanism in the platform is not
+# very elegant, have to refine in the future.
