@@ -13,7 +13,7 @@ url: << f"https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={includ
 data_desktop: << f.http.request.get(url + '&strategy=DESKTOP').json() >>
 data_mobile: << f.http.request.get(url + '&strategy=MOBILE').json() >>
 
-categories: << data.lighthouseResult.categories >>
+categories: << data_desktop.lighthouseResult.categories >>
 
 index:
     performance: << categories.performance.score * 100 >> -> int
