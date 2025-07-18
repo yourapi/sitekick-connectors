@@ -1,0 +1,13 @@
+type: StrInt  # Type of the data-form will be determined automatically in the future
+
+include: homepage
+
+requires: << include.homepage.final_url >>
+
+links: << functions.hosting.link_check(include.homepage.final_url) >>
+
+index:
+    valid: << len([link for link in links if link.get('valid')]) >> -> int
+    invalid: << len([link for link in links if not link.get('valid')]) >> -> int
+
+file: data
