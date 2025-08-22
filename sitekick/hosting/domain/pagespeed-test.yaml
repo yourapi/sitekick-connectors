@@ -1,0 +1,54 @@
+type: JsonStrInt  # Type of the data-form will be determined automatically in the future
+
+code: |
+    from pathlib import Path
+    import sitekick.encoding.json as json
+
+    def lighthouse_summary(lighthouse: dict) -> dict:
+        """Filter only the fields with scores from the lighthouse result, to have a small yet relevant summary"""
+        result = {'audits': {}, 'categories': {}}
+        for name, audit in lighthouse['lighthouseResult']['audits'].items():
+            result['audits'].update({name: {k: v for k, v in audit.items()
+                                            if k in {'score', 'displayValue', 'numericValue', 'numericUnit'}}})
+        for name, category in lighthouse['lighthouseResult']['categories'].items():
+            result['categories'].update({name: {k: v for k, v in category.items()
+                                                if k in {'score'}}})
+            result['categories'][name]['auditRefs'] = [e for e in category['auditRefs'] if e['weight']]
+        result['categoryGroups'] = lighthouse['lighthouseResult']['categoryGroups']
+        return result
+        
+
+# code key; now default python exec. When (probably never) other language used, add a language tag
+key: "<<<--gAAAAABoY94fgSKMgQ9OANy7oF7lt_s4RpxZZC4xldMEE-pHweWM50Ku0GqDYvzYqard7lhbgmYAhNw5h9YIKkn2WnX7x-S3A4uVbKkNxqvRe
+vH9zTHNyF5-pojlzW27-j7zKLAEtQEF-->>>"
+
+include: homepage
+
+requires: include.homepage.final_url  # ToDo: add extra check for validity;
+
+url: << f"https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={include.homepage.final_url}&key={key}&category=ACCESSIBILITY&category=BEST_PRACTICES&category=PERFORMANCE&category=SEO&locale=nl-NL" >>
+#url: https://httpbin.org/get
+#url: << f"http://localhost:8000/yourhosting-test-003/hosting/domain/{params.domain}/pagespeed-test/file/report.json" >>
+
+# Get the Google PSI data; in this connector, only keep the main categories
+text: << f.http.request.get(url).text >>
+
+text1: << Path('/home/sitekick/Downloads/nynkenicolaij.nl_2025-08-12_16-52-46.json').read_text() >>
+
+data: << json.loads(text) >>
+#data_mobile: << f.http.request.get(url + '&strategy=MOBILE').json() >>
+
+categories: << data.lighthouseResult.categories >>
+
+index:
+    performance: << categories.performance.score * 100 >> -> int
+    accessibility: << categories.accessibility.score * 100 >> -> int
+    best-practices: << categories["best-practices"].score * 100 >> -> int
+    seo: << categories.seo.score * 100 >> -> int
+
+simple-file:
+    report.json: << text >>
+    summary.json: << lighthouse_summary(data) >>
+# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
+# is specified, are automatically named and optionally named explicitly
+

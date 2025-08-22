@@ -9,5 +9,6 @@ links: << functions.hosting.link_check(include.homepage.final_url) >>
 index:
     valid: << len([link for link in links if link.get('valid')]) >> -> int
     invalid: << len([link for link in links if not link.get('valid')]) >> -> int
+    urls: << data.WriterCSV([link for link in links if not link.get('valid')][:10], fieldnames =('result', 'url', 'parentname')).content().decode('utf-8') >> -> str
 
-file: data
+file: << json.dumps(links) >>

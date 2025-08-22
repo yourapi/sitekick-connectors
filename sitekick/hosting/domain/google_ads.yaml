@@ -1,0 +1,18 @@
+type: StrInt  # Type of the data-form will be determined automatically in the future
+
+include: homepage
+
+requires: << inclide.homepage.final_url >>
+
+content: << functions.hosting.content(include.homepage.final_url) >>
+
+# Have to finalize this function!
+analytics: << functions.hosting.google_analytics(content.html) >>
+
+index:
+    has_analytics: << analytics >> -> int
+
+
+file: << content >>
+# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
+# is specified, are automatically named and optionally named explicitly

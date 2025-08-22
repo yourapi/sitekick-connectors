@@ -27,9 +27,21 @@ refresh:
 json: << dns.generic >>
 # Stored in the database, very limited querying (only equality/missing/present), presence in lists
 
-file: null
+file:
+    summary.json:  # Multiple files with the same name, is only relevant when multiple access types are used.
+        -   content: << dns.generic >>
+            access: by-uuid  # only for someone who has the uuid of the item
+        -   content: << dns.generic >>
+            access: public  # public for everyone
+            content-type: text/plain  # not correct, but to show the field
+    full.json:  # sinlge file specified. access by default is private, content-type is derived from the file extension.
+        content: << dns >>
+
+simple-file:   # simple file only has name and content, access is private, content-type is automatic. Is identical to above spec in complete file spec.
+    full.json: << dns >>
+
 # Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
-# is specified, are automatically named and optionally named explicitly
+# is specified, are named explicitly
 
 transient: null
 # Not stored, only used for the current session, no querying, no presence in lists

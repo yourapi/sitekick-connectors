@@ -12,6 +12,9 @@ url: << f"https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={includ
 # Get the Google PSI data; in this connector, only keep the main categories
 data: << f.http.request.get(url).json() >>
 #data_mobile: << f.http.request.get(url + '&strategy=MOBILE').json() >>
+code: "import sitekick.encoding.json as json
+doifgj
+odfig"    # code? Or other key? And no << >> for evaluation.
 
 categories: << data.lighthouseResult.categories >>
 audits: << data.lighthouseResult.audits >>
@@ -38,7 +41,8 @@ json:
     canonical: << audits['canonical'].score >>
 # Stored in the database, very limited querying (only equality/missing/present), presence in lists
 
-file: null
+simple-file:
+    report.json: << Path('/home/sitekick/Downloads/nynkenicolaij.nl_2025-08-12_16-52-46.json') >>
 # Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
 # is specified, are automatically named and optionally named explicitly
 
