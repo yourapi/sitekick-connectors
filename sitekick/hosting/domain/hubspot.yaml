@@ -1,0 +1,10 @@
+type: Empty  # Type of the data-form will be determined automatically in the future
+
+params:
+    timeout: 8
+    status: 503
+
+refresh: on-demand
+
+# Transient does not store the result and always refreshes when requested; the used mechanism in the platform is not
+# very elegant, have to refine in the future.

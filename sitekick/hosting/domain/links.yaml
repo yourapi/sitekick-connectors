@@ -2,13 +2,13 @@ type: StrInt  # Type of the data-form will be determined automatically in the fu
 
 include: homepage
 
-requires: << include.homepage.final_url >>
+requires: << include.homepage.attributes.final_url >>
 
-links: << functions.hosting.link_check(include.homepage.final_url) >>
+links: << functions.hosting.link_check(include.homepage.attributes.final_url) >>
 
 index:
     valid: << len([link for link in links if link.get('valid')]) >> -> int
     invalid: << len([link for link in links if not link.get('valid')]) >> -> int
-    urls: << data.WriterCSV([link for link in links if not link.get('valid')][:10], fieldnames =('result', 'url', 'parentname')).content().decode('utf-8') >> -> str
 
-file: << json.dumps(links) >>
+simple-file:   # simple file only has name and content, access is private, content-type is automatic. Is identical to above spec in complete file spec.
+    full.json: << links >>

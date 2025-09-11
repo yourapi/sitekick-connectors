@@ -1,4 +1,4 @@
-type: JsonStrInt  # Type of the data-form will be determined automatically in the future
+type: FloatInt  # Type of the data-form will be determined automatically in the future
 
 url: "https://domdetailer.com/api/checkDomain.php"
 params:
@@ -9,18 +9,19 @@ params:
 
 data: << functions.convert.convert_type(f.http.request.get(url=url, params=params).json(), int, float) >>  # Data contains str repr for float and int; convert them where applicable
 
-#index: # Index of the data-form, for q<<uerying and data-analysis.
-#    majesticCF: << data.majesticCF >> -> int
-#    majesticTF: << data.majesticTF >> -> int
-#    mozRank: << data.mozRank * 10 >> -> int
-#    mozLinks: << data.mozLinks >> -> int
+index: # Index of the data-form, for querying and data-analysis.
+    majesticCF: << data.majesticCF >> -> int
+    majesticTF: << data.majesticTF >> -> int
+    mozLinks: << data.mozLinks >> -> int
+    majesticRefSubnets: << data.majesticRefSubnets >> -> int
+    majesticLinks: << data.majesticLinks >> -> float
+    mozRank: << data.mozRank >> -> float
+    majesticRefDomains: << data.majesticRefDomains >> -> float
+    majesticIPs: << data.majesticIPs >> -> float
 
-json: << data >>
-# Stored in the database, very limited querying (only equality/missing/present), presence in lists
 
-file: null
-# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
-# is specified, are automatically named and optionally named explicitly
+simple-file:   # simple file only has name and content, access is private, content-type is automatic. Is identical to above spec in complete file spec.
+    full.json: << data >>
 
 transient: null
 # Not stored, only used for the current session, no querying, no presence in lists

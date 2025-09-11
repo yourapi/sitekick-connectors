@@ -7,7 +7,7 @@ include:
     - whois
     - dns
 
-data: << functions.hosting.supercat(registered=include.rtr, whois=include.whois, dns=include.dns, category=include.category) >>
+data: << functions.hosting.supercat(registered=include.rtr.attributes, whois=include.whois.attributes, dns=include.dns.attributes, category=include.category.attributes) >>
 
 index:
     category: << data.category >> -> str

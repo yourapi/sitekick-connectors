@@ -28,9 +28,8 @@ json:
 set-incentive: "<< functions.http.request.patch(self.links.self + '/attributes', json={'points': json.registered}) >>"
 #set-incentive: << functions.yourhosting.commercial.incentives.set_incentive_points(self, json.count) >>
 
-code:
-  import:
-    - arrow  # Does not work yet; at this moment a fixed import, so fake
+code: |
+  import arrow
 
 refresh:
   every: << "day" if arrow.get(self.meta.created_at) < arrow.now().shift(months=3) else "never" >>

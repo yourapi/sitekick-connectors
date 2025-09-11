@@ -1,10 +1,10 @@
 include: a
 
-requires: << include.a.a1 >= 1 >>
+requires: << include.a.attributes.a1 >= 1 >>
 
 params:
-    b1: << include.a.a1 >>
-    b2: << include.a.a2 >>
+    b1: << include.a.attributes.a1 >>
+    b2: << include.a.attributes.a2 >>
 
 type: StrInt  # Type of the data-form will be determined automatically in the future
 

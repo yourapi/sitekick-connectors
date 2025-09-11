@@ -1,8 +1,10 @@
 type: StrInt  # Type of the data-form will be determined automatically in the future
 
-include: homepage
+include:
+    - homepage
+    - content
 
-requires: << include.homepage.final_url >>
+requires: << include.homepage.attributes.final_url >>
 
 category_keywords:
 -   category: initiated
@@ -208,7 +210,11 @@ category_keywords:
 -   category: initiated
     keywords: published,yet,has,offline,not,this,site,been
 
-data: << functions.hosting.category_by_content(params.domain, category_keywords) >>
+data: |
+    << functions.hosting.category_by_content(
+        params.domain,
+        get(include.content.links.files['full.json']).json(),
+        category_keywords) >>
 
 index:
     category: << data.category >> -> str

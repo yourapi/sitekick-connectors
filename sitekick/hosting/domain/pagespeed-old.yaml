@@ -1,0 +1,47 @@
+type: JsonStrInt  # Type of the data-form will be determined automatically in the future
+
+key: "<<<--gAAAAABoY94fgSKMgQ9OANy7oF7lt_s4RpxZZC4xldMEE-pHweWM50Ku0GqDYvzYqard7lhbgmYAhNw5h9YIKkn2WnX7x-S3A4uVbKkNxqvRe
+vH9zTHNyF5-pojlzW27-j7zKLAEtQEF-->>>"
+
+include: homepage
+
+requires: include.homepage.attributes.final_url  # ToDo: add extra check for validity;
+
+url: << f"https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={include.homepage.attributes.final_url}&key={key}&category=ACCESSIBILITY&category=BEST_PRACTICES&category=PERFORMANCE&category=SEO" >>
+
+# Get the Google PSI data; in this connector, only keep the main categories
+data: << f.http.request.get(url).json() >>
+#data_mobile: << f.http.request.get(url + '&strategy=MOBILE').json() >>
+
+categories: << data.lighthouseResult.categories >>
+audits: << data.lighthouseResult.audits >>
+
+index:
+    performance: << categories.performance.score * 100 >> -> int
+    accessibility: << categories.accessibility.score * 100 >> -> int
+    best-practices: << categories["best-practices"].score * 100 >> -> int
+    seo: << categories.seo.score * 100 >> -> int
+
+json:
+    viewport: << audits.viewport.score >>
+    viewport-insight: << audits['viewport-insight'].score >>
+    first-contentful-paint: << audits['first-contentful-paint'].score >>
+    modern-image-formats: << audits['modern-image-formats'].score >>
+    image-delivery-insight: << audits['image-delivery-insight'].score >>
+    image-size-responsive: << audits['image-size-responsive'].score >>
+    uses-optimized-images: << audits['uses-optimized-images'].score >>
+    uses-responsive-images: << audits['uses-responsive-images'].score >>
+    is-crawlable: << audits['is-crawlable'].score >>
+    crawlable-anchors: << audits['crawlable-anchors'].score >>
+    robots-txt: << audits['robots-txt'].score >>
+    image-alt: << audits['image-alt'].score >>
+    canonical: << audits['canonical'].score >>
+# Stored in the database, very limited querying (only equality/missing/present), presence in lists
+
+simple-file:
+    report.json: << Path('/home/sitekick/Downloads/nynkenicolaij.nl_2025-08-12_16-52-46.json') >>
+# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
+# is specified, are automatically named and optionally named explicitly
+
+transient: null
+# Not stored, only used for the current session, no querying, no presence in lists

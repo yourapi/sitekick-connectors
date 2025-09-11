@@ -1,10 +1,10 @@
 type: StrInt  # Type of the data-form will be determined automatically in the future
 
-include: homepage
+include: content
 
-requires: << include.homepage.final_url >>
+# content: << functions.hosting.content(include.homepage.attributes.final_url) >>
+content: << get(include.content.links.files['full.json']).json() >>
 
-content: << functions.hosting.content(include.homepage.final_url) >>
 regex: <<
     regex.findall(r"(copyright|\(c\)|©)\s*((\S{0,20}\s*){0,3}?)([\d\s\-]+)", content.text, regex.I + regex.DOTALL) +
     regex.findall(r"(copyright)\s*((\S{0,20}\s*?){0,3})?([\d\s\-]+)", content.html, regex.I + regex.DOTALL) 
@@ -13,13 +13,12 @@ regex: <<
 # So © 2013‑2025 returns 2025
 match: << [group[-1] for group in regex if regex.match('.*\d{2,4}', group[-1])] >>
 
-requires1: << match >>
-# If multiple requirements on different locations, just add a number
-
+requires: << match >>
 year1: << max(int((m.replace('-', ' ').strip()).rsplit()[-1]) for m in match) >>
-year: << year1 if year1 > 1900 else year1 + 1900 if year1 > 80 else year1 + 2000  >>
 
-requires2: << 1980 <= year <= datetime.date.today().year >>
+year: << year1 if year1 > 1900 else year1 + 1900 if year1 > 80 else year1 + 2000  >>
+requires1: << 1980 <= year <= datetime.date.today().year >>
+# If multiple requirements on different locations, just add a number, so: requires1, requires2, requires3
 
 index:
     year: << year >> -> int

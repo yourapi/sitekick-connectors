@@ -1,0 +1,15 @@
+type: StrInt  # Type of the data-form will be determined automatically in the future
+
+include:
+    - homepage
+    - content
+
+requires: << include.homepage.attributes.final_url >>
+
+# Have to finalize this function! And get data from content-file
+analytics: << functions.hosting.google_analytics(get(include.content.links.files['full.json']).json().get('html')) >>
+
+index:
+    has_analytics: << analytics.has_analytics >> -> int
+    type: << analytics.analytics_type >> -> str
+    tracking_id: << analytics.tracking_id >> -> str

@@ -1,0 +1,4 @@
+type: Json  # Type of the data-form will be determined automatically in the future
+
+json:
+    tokens: null

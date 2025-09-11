@@ -8,6 +8,5 @@ index:
     issuer: << data.issuer >> -> str
     invalid: << data.invalid >> -> str
     common_name: << data.commonName >> -> str
-    ip: << data.ip >> -> str
     valid_from: << data.validFrom >> -> datetime
     valid_to: << data.validTo >> -> datetime

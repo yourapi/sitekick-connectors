@@ -1,21 +1,47 @@
-type: StrInt  # Type of the data-form will be determined automatically in the future
+type: Empty  # Type of the data-form will be determined automatically in the future
 
-include:
-    - homepage
+include: homepage
 
-request:
-    functions.requests.get:
-        url: "https://api.apiflash.com/v1/urltoimage"
-        params:
-            access_key: "<<<--gAAAAABnIQPEpqtJHxGMXcmQE-jEJBxxBlIYA_b1pOWn0dUdhs8xG5wmystmZPUJhQkfVUz2NIkzpE1aTWKo7uU69dfdfxrYPYRhNUF8RpoJQuUZ3-IBFX2UuyZ07yhGp-_DzASEhLB1-->>>"
-            wait_until: 'page_loaded'
-            ttl: 14 * 24 * 3600  # 14 days
-            response_type: 'json'
-            url: include.homepage.final_url
+url: https://api.apiflash.com/v1/urltoimage
 
-data: request.json()
+params:
+    access_key: <<<--gAAAAABnIQPEpqtJHxGMXcmQE-jEJBxxBlIYA_b1pOWn0dUdhs8xG5wmystmZPUJhQkfVUz2NIkzpE1aTWKo7uU69dfdfxrYPYRhNUF8RpoJQuUZ3-IBFX2UuyZ07yhGp-_DzASEhLB1-->>>
+    url: << include.homepage.attributes.final_url >>
+    response_type: image
+    format: webp
+    quality: 95
+    scroll_page: true
+    wait_until: page_loaded
+    full_page: true
+    no_cookie_banners: true
+    no_ads: true
+    no_tracking: true
 
-index:
-    url: data.url -> str
+code: |
+    from urllib.parse import quote
+    from functions.images.convert import crop, save_as
 
-# In the future: store the screenshot on S3 backend.
+user_agents:
+    mobile:
+        user_agent: << quote("Mozilla/5.0 (Linux; Android 13.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.158 Mobile Safari/537.36") >>
+        width: 384
+    desktop:
+        user_agent: << quote("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.158 Safari/537.36") >>
+        width: 1920
+    tablet:
+        user_agent: << quote("Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/604.1") >>
+        width: 768
+
+content:
+    mobile: << f.http.request.get(url, params=params | user_agents.mobile).content >>
+    desktop: << f.http.request.get(url, params=params | user_agents.desktop).content >>
+
+thumbnails:
+    mobile: << save_as(crop(content.mobile, (0, 0, 384, 768), (384, 768)), format='WEBP', quality=95) >>
+    desktop: << save_as(crop(content.desktop, (0, 0, 1920, 1440), (768, 576)), format='WEBP', quality=95) >>
+
+simple-file:
+    mobile.webp: << content.mobile >>
+    desktop.webp: << content.desktop >>
+    mobile-thumb.webp: << thumbnails.mobile >>
+    desktop-thumb.webp: << thumbnails.desktop >>
