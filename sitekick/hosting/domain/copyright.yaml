@@ -2,8 +2,11 @@ type: StrInt  # Type of the data-form will be determined automatically in the fu
 
 include: content
 
-# content: << functions.hosting.content(include.homepage.attributes.final_url) >>
-content: << get(include.content.links.files['full.json']).json() >>
+content_file: << include.content.links.files['full.json'] >>
+
+requires(424): << content_file >>
+
+content: << get(content_file).json() >>
 
 regex: <<
     regex.findall(r"(copyright|\(c\)|©)\s*((\S{0,20}\s*){0,3}?)([\d\s\-]+)", content.text, regex.I + regex.DOTALL) +

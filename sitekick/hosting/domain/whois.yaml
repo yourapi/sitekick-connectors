@@ -9,9 +9,9 @@ index:
     name_server: << @suppress data.name_servers_generic[0] >> -> str
     creation_date: << @suppress data.creation_date.date().isoformat() >> -> str
     expiration_date: << @suppress data.expiration_date.date().isoformat() >> -> str
-    year: << data.creation_date.year >> -> int  # Redundant info (see creation_date), but fields are available anyway
-    month: << data.creation_date.month >> -> int
-    day: << data.creation_date.day >> -> int
+    year: << @suppress data.creation_date.year >> -> int  # Redundant info (see creation_date), but fields are available anyway
+    month: << @suppress data.creation_date.month >> -> int
+    day: << @suppress data.creation_date.day >> -> int
 
 simple-file:   # simple file only has name and content, access is private, content-type is automatic. Is identical to above spec in complete file spec.
     full.json: << data >>

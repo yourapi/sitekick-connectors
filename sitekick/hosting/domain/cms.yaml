@@ -2,7 +2,7 @@ type: JsonStrInt  # Type of the data-form will be determined automatically in th
 
 include: homepage
 
-requires: << include.homepage.attributes.final_url >>
+requires(424): << include.homepage.attributes.final_url >>
 
 data: << functions.hosting.get_cms(include.homepage.attributes.final_url) >>
 

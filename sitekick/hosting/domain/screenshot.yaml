@@ -2,11 +2,14 @@ type: Empty  # Type of the data-form will be determined automatically in the fut
 
 include: homepage
 
+final_url: << include.homepage.attributes.final_url >>
+requires(424): << final_url >>
+
 url: https://api.apiflash.com/v1/urltoimage
 
 params:
     access_key: <<<--gAAAAABnIQPEpqtJHxGMXcmQE-jEJBxxBlIYA_b1pOWn0dUdhs8xG5wmystmZPUJhQkfVUz2NIkzpE1aTWKo7uU69dfdfxrYPYRhNUF8RpoJQuUZ3-IBFX2UuyZ07yhGp-_DzASEhLB1-->>>
-    url: << include.homepage.attributes.final_url >>
+    url: << final_url >>
     response_type: image
     format: webp
     quality: 95
@@ -33,8 +36,8 @@ user_agents:
         width: 768
 
 content:
-    mobile: << f.http.request.get(url, params=params | user_agents.mobile).content >>
-    desktop: << f.http.request.get(url, params=params | user_agents.desktop).content >>
+    mobile: << get(url, params=params | user_agents.mobile).content >>
+    desktop: << get(url, params=params | user_agents.desktop).content >>
 
 thumbnails:
     mobile: << save_as(crop(content.mobile, (0, 0, 384, 768), (384, 768)), format='WEBP', quality=95) >>

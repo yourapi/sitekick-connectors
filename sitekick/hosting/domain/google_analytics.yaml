@@ -4,7 +4,7 @@ include:
     - homepage
     - content
 
-requires: << include.homepage.attributes.final_url >>
+requires(424): << include.homepage.attributes.final_url >>
 
 # Have to finalize this function! And get data from content-file
 analytics: << functions.hosting.google_analytics(get(include.content.links.files['full.json']).json().get('html')) >>
