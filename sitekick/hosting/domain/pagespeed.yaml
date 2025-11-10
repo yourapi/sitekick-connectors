@@ -2,7 +2,6 @@ type: FloatInt  # Type of the data-form will be determined automatically in the 
 
 # code key; now default python exec. When (probably never) other language used, add a language tag
 code: |
-    from pathlib import Path
     import sitekick.encoding.json as json
 
     def lighthouse_summary(lighthouse: dict) -> dict:
@@ -17,14 +16,15 @@ code: |
             result['categories'][name]['auditRefs'] = [e for e in category['auditRefs'] if e['weight']]
         result['categoryGroups'] = lighthouse['lighthouseResult']['categoryGroups']
         return result
-        
 
 key: "<<<--gAAAAABoY94fgSKMgQ9OANy7oF7lt_s4RpxZZC4xldMEE-pHweWM50Ku0GqDYvzYqard7lhbgmYAhNw5h9YIKkn2WnX7x-S3A4uVbKkNxqvRe
 vH9zTHNyF5-pojlzW27-j7zKLAEtQEF-->>>"
 
-include: homepage
+include:
+    - homepage
+    - category
 
-requires(424): << include.homepage.attributes.final_url >>
+requires(424): << include.homepage.attributes.final_url and include.category.attributes.category == 'active' >>
 
 url: << f"https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={include.homepage.attributes.final_url}&key={key}&category=ACCESSIBILITY&category=BEST_PRACTICES&category=PERFORMANCE&category=SEO&locale=nl-NL" >>
 

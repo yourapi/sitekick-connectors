@@ -19,7 +19,7 @@ index: # Index of the data-form, for querying and data-analysis.
     mx1: << dns.generic.mx1 >> -> str
 
 refresh:
-    every: << "1 month" if not index.a1 else "3 months" >>
+    every: << "3 ~months" if not index.a1 else "3 ~months" >>
 #    crontab: "30 12 * */2 sun"
     # Optionally, specify a crontab for fixed times.
     # format is https://en.wikipedia.org/wiki/Cron

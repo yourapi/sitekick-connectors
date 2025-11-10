@@ -1,0 +1,6 @@
+# In the future, this is the default template for more specific files. The main function is, to specifiy that
+# attributes should never be refreshed, like a common datatype (connector)
+
+attributes:
+    type: Json
+    refresh: never

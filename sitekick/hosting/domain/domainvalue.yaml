@@ -15,4 +15,10 @@ result: |
 index:
     value: << result.domainvalue_num >> -> float
     value_rounded: << result.domainvalue_num_rounded >> -> float
-    mozRank: << result.mozRank >> -> float
+    searchvol: << result.searchvol >> -> float
+    cpc: << result.cpc >> -> float
+    mozRank: << round(result.mozRank * 10) >> -> int
+
+bff: extra  # The default bff to apply to the retrieved data. Interferes with getting the 'naked' data when refreshing
+# a new item, so disabled for now. For long term: have to find out what goes wrong and repair it. Hint: it gets
+# refreshed 25 times when performed on a new item which not necessarily has a key.

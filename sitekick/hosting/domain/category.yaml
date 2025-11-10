@@ -1,10 +1,8 @@
 type: StrInt  # Type of the data-form will be determined automatically in the future
 
-include:
-    - homepage
-    - content
+include: content
 
-requires: << include.homepage.attributes.final_url >>
+content: "<< get(include.content.links.files['full.json']).json() if include.content.links.files else {} >>"
 
 category_keywords:
 -   category: initiated
@@ -213,7 +211,7 @@ category_keywords:
 data: |
     << functions.hosting.category_by_content(
         params.domain,
-        get(include.content.links.files['full.json']).json(),
+        content,
         category_keywords) >>
 
 index:

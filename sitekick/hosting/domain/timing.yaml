@@ -17,4 +17,4 @@ index:
 # TBD: check and limit the values for the specified types
 
 refresh:
-  every: 2 ~weeks@10-23
+  every: ~month

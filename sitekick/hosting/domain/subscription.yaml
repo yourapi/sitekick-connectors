@@ -1,12 +1,8 @@
-type: StrInt  # Type of the data-form will be determined automatically in the future
+type: Json  # Type of the data-form will be determined automatically in the future
 
 data: << functions.hosting.update_subscription(item) >>
 
-index:
-    product_slugs: << data.product_slugs >> -> str
-    category: << data.category >> -> str
-    start_date: << data.start_date >> -> str
-    brand: << data.brand >> -> str
+json: << data >>
 
 item:  # In the far, far future: also use optional synonym, like domain
     meta:
