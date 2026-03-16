@@ -1,0 +1,13 @@
+type: JsonStrInt
+
+index:
+    start_date: << data.start_date >> -> str
+    end_date: << data.end_date >> -> str
+    cancel_date: << data.cancel_date >> -> str
+    product_slug: << data.product_slug >> -> str
+    contract_period: << data.contract_period >> -> int
+    billing_period: << data.billing_period >> -> int
+
+json: << data >>
+
+refresh: never

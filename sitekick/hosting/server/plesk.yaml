@@ -1,0 +1,21 @@
+type: StrInt  # Type of the data-form will be determined automatically in the future
+
+params:
+    key: str
+
+data: << functions.data.get_pushed_data(params.key) >>
+
+index:
+    hostname: << data.Server.Hostname >> -> str
+    ip-address: << data.Server['IP-address'] >> -> str
+    mac-address: << data.Server['MAC-address'] >> -> str
+
+# Now, add a relation (if not exists) between the server and the domain.
+
+# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
+# is specified, are automatically named and optionally named explicitly
+refresh: never
+
+properties:
+    max_timestamps: 10  # Have to make it work! Use a limit because the sedrver gets refreshed for every domain,
+        # so gets flooded with reofreshes

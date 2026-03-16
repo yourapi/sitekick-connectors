@@ -1,3 +1,6 @@
+# This is a future end point for storing a new subscription. They are now added through the `domains` end point,
+# but a domain is not mandatory, so should be added via the subscriptions end point
+
 type: Json  # Type of the data-form will be determined automatically in the future
 
 data: << functions.hosting.update_subscription(item, params, 'yourhosting') >>
