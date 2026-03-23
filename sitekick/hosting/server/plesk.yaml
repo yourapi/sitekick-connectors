@@ -3,12 +3,15 @@ type: StrInt  # Type of the data-form will be determined automatically in the fu
 params:
     key: str
 
-data: << functions.data.get_pushed_data(params.key) >>
+raw_data: << functions.data.get_pushed_data(params.key) >>
+requires(403): << functions.hosting.server.validation.check_server_ip(raw_data) >>
+
+server: << raw_data.payload.server >>
 
 index:
-    hostname: << data.Server.Hostname >> -> str
-    ip-address: << data.Server['IP-address'] >> -> str
-    mac-address: << data.Server['MAC-address'] >> -> str
+    hostname: << server.hostname >> -> str
+    ip-address: << server.ip_address >> -> str
+    mac-address: << server.mac_address >> -> str
 
 # Now, add a relation (if not exists) between the server and the domain.
 
@@ -17,5 +20,5 @@ index:
 refresh: never
 
 properties:
-    max_timestamps: 10  # Have to make it work! Use a limit because the sedrver gets refreshed for every domain,
-        # so gets flooded with reofreshes
+    min_refresh_time: 2592000  # 30 days: 30 * 24 * 3600. Definition is stored 'as-is', so no <<...>> possible
+    max_timestamps: 10  # Don't store more than 10 timestamps, to save space, this is not informative for the server

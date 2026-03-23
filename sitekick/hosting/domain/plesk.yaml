@@ -4,25 +4,27 @@ params:
     key: str
 
 raw_data: << functions.data.get_pushed_data(params.key) >>
-data: << functions.hosting.server.plesk.parse_plesk_output(raw_data.info) >>
+requires(403): << functions.hosting.server.validation.check_domain_ip(raw_data) >>
+
+data: << functions.hosting.server.plesk.parse_plesk_output(raw_data.payload.info) >>
 
 json:
-    domain-status: << data.general['domain status'] >>
-    creation-date: << data.general['creation date'] >>
-    expiration-date: << data.general['expiration date'] >>
-    disk-space-limit-date: << data.general['disk space limit'] >>
-    size: << data.general['size'] >>
-    traffic: << data.general['traffic'] >>
-    hard-disk-quota: << data.hosting['hard disk quota'] >>
-    disk-space-httpdocs: << data.hosting['Disk space used by httpdocs'] >>
-    disk-space-logs: << data.hosting['Disk space used by Log files and statistical reports'] >>
-    web-statistics: << data.hosting['web statistics'] >>
-    total-web-users: << data['web users']['total'] >>
-    mailboxes: << data['mail accounts']['mailboxes'] >>
-    database-count: << data['databases']['total'] >>
-    database-size: << data['databases']['total size'] >>
-    web-applications-count: << data['web applications']['total'] >>
-    subscription: << data['subscription information']['plan details'] >>
+    domain-status: << data.general.domain_status >>
+    creation-date: << data.general.creation_date >>
+    expiration-date: << data.general.expiration_date >>
+    disk-space-limit: << data.general.disk_space_limit >>
+    size: << data.general.size >>
+    traffic: << data.general.traffic >>
+    hard-disk-quota: << data.hosting.hard_disk_quota >>
+    disk-space-httpdocs: << data.hosting.disk_space_used_by_httpdocs >>
+    disk-space-logs: << data.hosting.disk_space_used_by_log_files_and_statistical_reports >>
+    web-statistics: << data.hosting.web_statistics >>
+    total-web-users: << data.web_users.total >>
+    mailboxes: << data.mail_accounts.mailboxes >>
+    payloadbase-count: << data.databases.total >>
+    payloadbase-size: << data.database.total_size >>
+    web-applications-count: << data.web_applications.total >>
+    subscription: << data.subscription_information.plan_details >>
 
 # Now, add a relation between the server and the domain. Do it at both ends and ignore errors, so relationship is always made
 
