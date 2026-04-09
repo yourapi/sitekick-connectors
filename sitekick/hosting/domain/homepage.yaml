@@ -1,17 +1,19 @@
 type: StrInt  # Type of the data-form will be determined automatically in the future
 
+description: The homepage of the domain, resolve the url based on the domain
+
 data: << functions.hosting.homepage(params.domain) >>
 
 requires: << data.final_url >>  # When no url, no use in storing a homepage.
 
 index:
-    url: << data.url >> -> str
-    final_url: << data.final_url >> -> str
-    final_domain: << data.final_domain >> -> str
-    https: << data.https >> -> int
-    http_redirected: << data.redirect_number >> -> int
-    redirects: << data.redirects[0] if data.redirects else None >> -> int
-    domain_redirected: << data.domain_redirected >> -> int
+    url: << data.url >> -> str  # the first resolved url, no redirects followed | https://example.com/
+    final_url: << data.final_url >> -> str  # the url which is finally requested | https://example.com/
+    final_domain: << data.final_domain >> -> str  # final domain, not necessarily the one the user typed in | example.com
+    https: << data.https >> -> int  # 1 if https, 0 of http (no ssl) | 1
+    http_redirected: << data.redirect_number >> -> int  # number of redirects | 0
+    redirects: << data.redirects[0] if data.redirects else None >> -> int  # the http status code for the first redirect | 302
+    domain_redirected: << data.domain_redirected >> -> int  # 1 if the final domain is different from the initial domain, else 0 | 0
 # index defines the fields in the record for immediate retrieval and extensive querying. Each field is indexed.
 
 summary:

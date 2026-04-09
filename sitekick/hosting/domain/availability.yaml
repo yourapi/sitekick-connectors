@@ -1,5 +1,10 @@
 type: Json  # Type of the data-form will be determined automatically in the future
 
+description: >-
+    Check the availability of domain names with different top-level domains (TLDs) for a given domain. 
+    The tlds to check can be specified in the query parameter `tlds`, separated by spaces.
+    Default: eu com be de me net nu org online
+
 params:
     tlds: "eu com be de me net nu org online"
 

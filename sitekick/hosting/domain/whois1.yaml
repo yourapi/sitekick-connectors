@@ -1,3 +1,0 @@
-type: Empty  # To have a 'pre-process' bff, it MUST be a valid datatype, even if no processing done with the data
-
-refresh: never
