@@ -6,6 +6,7 @@ data: << functions.hosting.homepage(params.domain) >>
 
 requires: << data.final_url >>  # When no url, no use in storing a homepage.
 
+# index defines the fields in the record for immediate retrieval and extensive querying. Each field is indexed.
 index:
     url: << data.url >> -> str  # the first resolved url, no redirects followed | https://example.com/
     final_url: << data.final_url >> -> str  # the url which is finally requested | https://example.com/
@@ -14,7 +15,6 @@ index:
     http_redirected: << data.redirect_number >> -> int  # number of redirects | 0
     redirects: << data.redirects[0] if data.redirects else None >> -> int  # the http status code for the first redirect | 302
     domain_redirected: << data.domain_redirected >> -> int  # 1 if the final domain is different from the initial domain, else 0 | 0
-# index defines the fields in the record for immediate retrieval and extensive querying. Each field is indexed.
 
 summary:
     final_url: << index.final_url >>
