@@ -1,0 +1,6 @@
+attributes:
+    type: JsonStrInt
+    refresh: never
+
+on_create:
+    include: "*"
