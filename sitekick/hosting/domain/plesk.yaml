@@ -3,9 +3,13 @@ type: Json  # Type of the data-form will be determined automatically in the futu
 params:
     filename: str
 
+include: dns
+
 raw_data: << open(params.filename).read() >>
 
 data: << functions.hosting.server.plesk.parse_plesk_output(raw_data) >>
+
+requires: << data.Server.Hostname == dns.a_fqdn1 or data.Server["IP-address"] == dns.a1 >>
 
 json:
     php_version: << data.php_version >>
