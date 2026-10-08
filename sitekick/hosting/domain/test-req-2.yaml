@@ -1,0 +1,9 @@
+type: StrDateInt  # Type of the data-form will be determined automatically in the future
+
+include: test-req-1
+
+requires(424): << include['test-req-1'].attributes.now >>
+
+index:
+    now: << include['test-req-1'].attributes.now >> -> datetime
+    timestamp: << include['test-req-1'].attributes.timestamp >> -> str

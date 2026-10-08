@@ -1,0 +1,19 @@
+type: StrInt  # Type of the data-form will be determined automatically in the future
+# TBD: include dns, whois and category instead of copy-paste!!!
+
+include:
+    - category
+    - rtr
+    - whois
+    - dns
+
+data: << functions.hosting.supercat(registered=include.rtr.attributes, whois=include.whois.attributes, dns=include.dns.attributes, category=include.category.attributes) >>
+
+index:
+    category: << data.category >> -> str
+    subcategory: << data.subcategory >> -> str
+    subscription: << self.attributes.subscription.category >> -> str
+    slugs: << self.attributes.subscription.slugs >> -> str
+
+refresh:
+    every: << '~month' if index.category != 'active' else '6 ~months' >>

@@ -1,0 +1,24 @@
+type: StrInt  # Type of the data-form will be determined automatically in the future
+
+params:
+    key: str
+
+raw_data: << functions.data.get_pushed_data(params.key) >>
+requires(403): << functions.hosting.server.validation.check_server_ip(raw_data) >>
+
+server: << raw_data.payload.server >>
+
+index:
+    hostname: << server.hostname >> -> str
+    ip-address: << server.ip_address >> -> str
+    mac-address: << server.mac_address >> -> str
+
+# Now, add a relation (if not exists) between the server and the domain.
+
+# Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
+# is specified, are automatically named and optionally named explicitly
+refresh: never
+
+properties:
+    min_refresh_time: 2592000  # 30 days: 30 * 24 * 3600. Definition is stored 'as-is', so no <<...>> possible
+    max_timestamps: 10  # Don't store more than 10 timestamps, to save space, this is not informative for the server

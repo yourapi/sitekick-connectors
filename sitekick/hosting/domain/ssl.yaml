@@ -1,0 +1,21 @@
+type: StrInt  # Type of the data-form will be determined automatically in the future
+# TBD: include dns, whois and category instead of copy-paste!!!
+
+include:
+    - status
+    - homepage
+    - detailed_homepage
+    - certificate
+    - certificate_www
+
+index:
+    category: << include.status.attributes.category >> -> str
+    final_url: << include.homepage.attributes.final_url >> -> str
+    https: << include.detailed_homepage.attributes.https_supported >> -> int
+    http_redirected: << include.detailed_homepage.attributes.http_redirected >> -> int
+    www_consistent: << include.detailed_homepage.attributes.endpoints_are_identical or include.detailed_homepage.redirected_to_www >> -> int
+    domain_redirected: << include.homepage.attributes.domain_redirected >> -> int
+    issuer: << include.certificate.attributes.issuer >> -> str
+#    valid_to: << int(arrow.get(include.certificate.attributes.valid_to).timestamp() / 86400) >> -> int
+    # Number of days since 1970-01-01
+    invalid: << include.certificate.attributes.invalid or include.certificate_www.attributes.invalid >> -> str

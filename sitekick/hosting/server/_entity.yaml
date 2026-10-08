@@ -13,6 +13,7 @@ attributes:
         cpus: -> int
         mem: -> int
         disks: -> int
+    refresh: never
 
 # Relations don't have to be defined on both ends; domains are sufficient. If definition is repeated, MUST BE identical,
 # otherwise, an exception is raised.

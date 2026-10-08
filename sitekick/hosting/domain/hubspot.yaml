@@ -1,0 +1,7 @@
+type: Empty  # To have a 'pre-process' bff, it MUST be a valid datatype, even if no processing done with the data
+
+params:
+    timeout: 8
+    status: 503
+
+refresh: on-demand

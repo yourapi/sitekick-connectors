@@ -1,0 +1,17 @@
+type: FloatInt  # Type of the data-form will be determined automatically in the future
+
+internet_nl: << functions.queue.send('internet_nl', self) >>
+# After the message is sent, the action will be performed asynchronously and the result is store in the right place
+# In the (far) future, support async execution by handling over control and letting it be picked up later by  the
+# platform, where mapping is performed in the next part of the specification (fancy!!)
+
+index: # Index of the data-form, for querying and data-analysis.
+    ipv6: -> float  # Currently, the type of the variable is explicit; will be derived from sample data in the future.
+    dnssec: -> float
+    https: -> float
+    total: -> int
+
+refresh:
+    every: ~month  # Random moment once every month, so no fixed day
+    # Optionally, specify a crontab for fixed times.
+    # format is https://en.wikipedia.org/wiki/Cron

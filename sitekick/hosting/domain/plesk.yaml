@@ -1,17 +1,32 @@
-type: JsonStrInt  # Type of the data-form will be determined automatically in the future
+type: Json  # Type of the data-form will be determined automatically in the future
 
-index: # Index of the data-form, for querying and data-analysis.
-    majesticCF: data.majesticCF -> int
-    majesticTF: data.majesticTF -> int
-    mozRank: data.mozRank -> int
-    mozLinks: data.mozLinks-> int
+params:
+    filename: str
 
-json: data
-# Stored in the database, very limited querying (only equality/missing/present), presence in lists
+include: dns
 
-file: null
+raw_data: << open(params.filename).read() >>
+
+data: << functions.hosting.server.plesk.parse_plesk_output(raw_data) >>
+
+requires: << data.Server.Hostname == dns.a_fqdn1 or data.Server["IP-address"] == dns.a1 >>
+
+json:
+    php_version: << data.php_version >>
+    Server: << data.Server >>
+    mail_accounts: << data.info["Mail Accounts"].Mailboxes >>
+    provider: << data.provider >>
+    provider-version: << data.provider_version >>
+    plesk-version: << data.plesk_version >>
+    plugins: << data.wp_plugins.plugins >>
+    themes: << data.wp_plugins.themes >>
+    wp_version: << data.wp_plugins.installation.Version >>
+    wp_state: << data.wp_plugins.installation.State >>
+    wp_latest_version: << data.wp_plugins.installation["Latest Version"] >>
+
+simple-file:
+    plesk.json: << data >>  # Data is quite convoluted
+
 # Stored offline, for individual items to fetch, no querying, no presence in lists. Can be multiple files when a list
 # is specified, are automatically named and optionally named explicitly
-
-transient: null
-# Not stored, only used for the current session, no querying, no presence in lists
+refresh: never

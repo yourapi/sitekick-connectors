@@ -1,0 +1,14 @@
+type: StrInt  # Type of the data-form will be determined automatically in the future
+
+include: homepage
+
+requires(424): << include.homepage.attributes.final_url >>
+
+links: << functions.hosting.link_check(include.homepage.attributes.final_url) >>
+
+index:
+    valid: << len([link for link in links if link.get('valid')]) >> -> int
+    invalid: << len([link for link in links if not link.get('valid')]) >> -> int
+
+simple-file:   # simple file only has name and content, access is private, content-type is automatic. Is identical to above spec in complete file spec.
+    full.json: << links >>

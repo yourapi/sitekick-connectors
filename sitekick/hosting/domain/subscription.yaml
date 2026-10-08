@@ -1,0 +1,11 @@
+type: Json  # Type of the data-form will be determined automatically in the future
+
+data: << functions.hosting.update_subscription(item, params, 'yourhosting') >>
+
+json: << data.data >>
+
+item:  # In the far, far future: also use optional synonym, like domain
+    meta:
+        created_at: << data.start_date >> -> timestamp
+
+refresh: never

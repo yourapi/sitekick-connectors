@@ -1,0 +1,28 @@
+type: Empty  # To have a 'pre-process' bff, it MUST be a valid datatype, even if no processing done with the data
+
+code: |
+    async def multi(self):
+        url = URL(self._request.url).as_local()
+        target_path, connectors_str = url.path.split('/multi/')
+        connectors = connectors_str.split('&')
+        # Now get the requested information, with the specified timeout. The Authorization header is replaced by the
+        # scope-id to prevent leakage of the token; replace the token-id with the original header token.
+        tasks = [
+            request.get(
+                url.replace(path=f"{target_path}/{connector}"),
+                headers={'Authorization': self._request.state.header_token}
+            )
+            for connector in connectors
+        ]
+        # Run all the tasks concurrently and wait for them to complete.
+        responses = await asyncio.gather(*tasks)
+        # Build the result dictionary from the responses. The results from gather() are in the same order as the input tasks.
+        result = {}
+        for connector, resp in zip(connectors, responses):
+            try:
+                result[connector] = resp.json()
+            except:
+                result[connector] = resp.text
+        return result
+
+refresh: on-demand

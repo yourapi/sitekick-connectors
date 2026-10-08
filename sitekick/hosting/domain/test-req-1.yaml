@@ -1,0 +1,14 @@
+params:
+    requires: 1
+
+type: StrDateInt  # Type of the data-form will be determined automatically in the future
+
+requires: << int(params.requires) >>
+
+code: |
+    import time
+    import arrow
+
+index:
+    now: << arrow.now() >> -> datetime
+    timestamp: << arrow.now().format() >> -> str

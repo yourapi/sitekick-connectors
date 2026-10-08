@@ -1,0 +1,16 @@
+key-names:
+    - uuid
+
+# Relations don't have to be defined on both ends; subscriptions are sufficient. If definition is repeated,
+# MUST BE identical, otherwise, an exception is raised.
+relationships:
+    sitekick/hosting/domain:
+        cardinality:
+            # Cardinality can be 1-1, 1-inf, inf-1 and inf-inf and optional.
+            # (https://vertabelo.com/blog/cardinality-in-data-modeling/)
+            # The cardinality is indicated using the possible counts of the relation.
+            from: "1"  # One subscription is connected to one domain
+            to: ">= 0"  # a domain has optional subscriptions
+        name:
+            from: domain
+            to: subscriptions

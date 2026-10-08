@@ -1,0 +1,17 @@
+params:
+    num: 0
+    klass: ""
+
+type: StrInt  # Type of the data-form will be determined automatically in the future
+
+data: << functions.dev.exception(num, klass) >>
+
+index:
+    a: << data.a >> -> str
+    b: << data.b >> -> str
+    c: << data.c >> -> str
+    d: << data.d >> -> str
+    e: << data.e >> -> int
+    f: << data.f >> -> int
+    g: << data.g >> -> int
+    h: << data.h >> -> int

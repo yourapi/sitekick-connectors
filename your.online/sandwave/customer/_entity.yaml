@@ -1,0 +1,23 @@
+# Relations don't have to be defined on both ends; subscriptions are sufficient. If definition is repeated,
+# MUST BE identical, otherwise, an exception is raised.
+relationships:
+    your.online/hosting/subscription:
+        cardinality:
+            # Cardinality can be 1-1, 1-inf, inf-1 and inf-inf and optional.
+            # (https://vertabelo.com/blog/cardinality-in-data-modeling/)
+            # The cardinality is indicated using the possible counts of the relation.
+            from: "(0, 1)"  # One subscription is optionally connected to one sandwave customer
+            to: ">= 0"  # a customer has optional subscriptions
+        name:
+            from: customer
+            to: subscriptions
+    sitekick/hosting/domain:
+        cardinality:
+            # Cardinality can be 1-1, 1-inf, inf-1 and inf-inf and optional.
+            # (https://vertabelo.com/blog/cardinality-in-data-modeling/)
+            # The cardinality is indicated using the possible counts of the relation.
+            from: "(0, 1)"  # One subscription is optionally connected to one sandwave customer
+            to: ">= 0"  # a customer has optional domains
+        name:
+            from: customer
+            to: domains

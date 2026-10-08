@@ -1,3 +1,26 @@
 # Get the data about the supplied server, using its ip-address
+# Has to be reqrittenm
 type: JsonStrInt
 
+code: |
+    # Server info in plain text; parse and store it
+    result = {}
+    # Parse the uptime string:
+    #  "08:46:05 up 21 days, 11:22,  2 users,  load average: 0.11, 0.07, 0.05"
+    r = regex.match(r'.*up\s*(\d+)\s*days,\s*(\d+:\d+).*(\d+)\s*user.*load average:(.*)',
+                    data.get('uptime', ''))
+    args = r.groups()
+    up = int(args[0]) * 60 * 24 + int(args[1].split(':')[0]) * 60 + int(args[1].split(':')[1])
+    users = int(args[2])
+    load = [float(e) for e in args[3].split(',')]
+    result['uptime'] = {'up': up / 24 / 60, 'users': users, 'load': load}
+    # Parse the mem string:
+    lines = data.get('free', '').split('\n')
+    # Get the names from the first line:
+    keys = [e.strip() for e in lines[0].split()]
+    values = [int(e) for e in lines[1].split() if e.isdigit()]
+    result['memory'] = dict(zip(keys, values))
+    # And the lscpu info:
+    lines = data.get('lscpu', '').split('\n')
+    result['lscpu'] = {line.split(':')[0].strip(): try_float_int(line.split(':')[-1].strip()) for line in lines}
+    return await data_mapper.set_data(result, json=result)

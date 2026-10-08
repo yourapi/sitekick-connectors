@@ -1,0 +1,13 @@
+type: StrInt  # Type of the data-form will be determined automatically in the future
+# TBD: include dns, whois and category instead of copy-paste!!!
+
+include:
+    - whois
+    - dns
+
+index:
+    registrar: << include.whois.attributes.registrar >> -> str
+    ns_whois: << ','.join(include.whois.attributes.name_servers) >> -> str
+    status_whois: << 1 if include.whois.attributes.status in {'active'} else 0 >> -> int
+    ns_dns: << ','.join(include.dns.attributes.ns) >> -> str
+    a_fqdn: << ','.join(include.dns.attributes.a_fqdn) >> -> str
