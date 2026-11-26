@@ -673,6 +673,8 @@ the search volume and cost per click of its keywords, the age of the registratio
 
 Hosting data of the domain from the Plesk server that hosts it. The data is filled when the Plesk server pushes its
 data to the platform; it is not refreshed by the schedule.
+The script that runs on the Plesk servers is
+[server-to-sitekick](https://yourapi.github.io/server-to-sitekick/).
 
 | Entry | Value |
 |---|---|

@@ -53,6 +53,8 @@ Designed for general information about a server. The definition sets only its da
 
 Designed for Plesk data that a server pushes to the platform. The connector reads the pushed data by its key and
 stores the host name, IP address and MAC address of the server.
+The data is sent by [server-to-sitekick](https://yourapi.github.io/server-to-sitekick/), the script that runs
+on the hosting server.
 
 | Entry | Value |
 |---|---|
