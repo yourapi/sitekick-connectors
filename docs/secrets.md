@@ -22,10 +22,8 @@ headers:
   `Authorization` header above. Quote the string when other text surrounds it.
 - A string can contain more than one encrypted value.
 - Whitespace and line breaks inside the encrypted value are ignored, so a long value can be split over lines.
-- Encrypted values can be used anywhere in a definition: in a header, in the defaults of `params`, or in an
-  intermediate key that is used to build a URL.
-
-The connectors `rtr`, `keywords`, `domdetailer`, `pagespeed` and `screenshot` use encrypted API keys in this way.
+- Encrypted values can be used anywhere in a definition, for example in a header or in an intermediate key that is
+  used to build a URL.
 
 ## How the platform handles them
 
@@ -43,10 +41,6 @@ Encrypted values are produced with the platform's encryption tool, with the key 
 connector. Ask the operator of your Sitekick installation to encrypt the value, or, if you operate the platform
 yourself, use its encryption helper as described in the Sitekick platform documentation. The result is the complete
 value, markers included; paste it into the definition unchanged.
-
-Because the same connector files are loaded into every environment of an installation, such as development, test and
-production, encrypt values for this repository so that every environment can decrypt them. The platform
-documentation describes how.
 
 ## Rules
 

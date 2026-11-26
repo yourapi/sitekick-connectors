@@ -32,7 +32,7 @@ refresh:
 ```
 
 `get` is the platform's asynchronous HTTP client; it follows redirects, and the evaluator awaits the call itself. If
-the site cannot be reached, the request raises an exception; `@suppress` turns that into an empty value, and
+the website cannot be reached, the request raises an exception; `@suppress` turns that into an empty value, and
 `requires` then stores status 404 instead of failing the refresh. The comment after each index field, written as
 `description | example`, ends up in the API description of the field. For real websites, the `homepage` connector
 does this work with more care, through `functions.hosting.homepage`.
@@ -58,9 +58,11 @@ refresh:
     every: << '~week' if not index.google else '3 ~months' >>
 ```
 
-`functions.hosting.nslookup` returns the records per type, and under `generic` the sorted values with handy shortcuts
-such as `mx1`, the first mail server. Missing values propagate as empty values, so `dns.generic.mx` is empty for a
-domain without MX records, or one that does not exist. The `m365` incentive connector uses the same pattern for
+`functions.hosting.nslookup` returns the records per type, and a section `generic` with, among others, `mx`: the list
+of mail servers in order of priority, `mx1`: the first of them, and `mx1_short`: its generic name. These are the same
+fields that the `dns` connector stores in its file `full.json` (see [dns](catalogue/hosting-domain.md#dns)). Missing
+values propagate as empty values, so `dns.generic.mx` is empty for a domain without MX records, or one that does not
+exist. The `m365` incentive connector uses the same pattern for
 Microsoft 365. Earlier keys are used only in the first `for` clause of the generator expression, as the expression
 language requires.
 
@@ -91,8 +93,8 @@ refresh:
 `include` fetches the `homepage` and `certificate` data points of the same domain in parallel, computing them first if
 needed. Without a homepage there is nothing to judge, so the connector stores 424 (failed dependency). A domain
 without a certificate has an empty `include.certificate.attributes`, and `valid` becomes 0. The refresh rule checks a
-failing domain daily and a passing one every three months. The incentive connectors in
-`your.online/commercial/incentive` (`ssl`, `website`, `m365`) follow the same pass/fail pattern with a `valid` field.
+failing domain daily and a passing one every three months. The incentive connectors
+`your.online/commercial/incentive/ssl`, `website` and `m365` follow the same pass/fail pattern with a `valid` field.
 They run on incentive items rather than domains, so they compute their checks directly instead of including domain
 connectors.
 

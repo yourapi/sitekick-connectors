@@ -9,8 +9,8 @@ and how items are related to each other.
 
 ## Item types and `_entity.yaml`
 
-Every item type folder contains an `_entity.yaml`. The loader creates the item type from it before it loads the
-connectors of the folder, because a connector can only be stored for an existing item type. The file has three
+Every item type folder contains an `_entity.yaml`. The loader creates the item type from it; a connector can only be
+stored for an existing item type. The file has three
 sections, all optional:
 
 ```yaml
@@ -46,6 +46,17 @@ has only a cast, such as `year: -> int`, takes its value from the supplied attri
 [Storage of results](storage.md#fields-without-an-expression)). The attributes data point is never refreshed by the
 schedule unless its definition sets a refresh rule.
 
+### Attributes in a separate file
+
+The attributes can be defined in two forms; both produce the same connector, named `attributes`, of the item type:
+
+| Form | How the loader treats it | Used by |
+|---|---|---|
+| An `attributes` section in `_entity.yaml` | The loader reads the section and stores it as the connector `<item type>/attributes`, with the data form from its `type` (`Json` without one) | Most item types, such as `sitekick/hosting/domain` and `sitekick/hosting/server` |
+| A file `attributes.yaml` next to `_entity.yaml` | The loader stores it as an ordinary connector; its file name makes it the connector `<item type>/attributes` | `your.online/hosting/subscription`, `your.online/sandwave/customer` |
+
+Use one form per item type. With a separate file, `_entity.yaml` holds only the key names and the relations.
+
 ## Keys
 
 An item is identified within its client and item type. It can be addressed in three ways:
@@ -54,7 +65,7 @@ An item is identified within its client and item type. It can be addressed in th
 |---|---|---|
 | Natural key | `example.com` | The key that is natural to the type: a domain name, an IP address, a UUID from another system. Unique per client and item type. |
 | Id | `12345` | The numeric id assigned by the platform. |
-| UUID | `<uuid>` | Derived from the id by encryption, so it can be shared without revealing the id. |
+| UUID | `<uuid>` | An opaque identifier of the item, which can be shared without revealing the id. |
 
 A value of digits only is read as an id, and a value in UUID form as the platform UUID. Subscriptions have a natural key
 in UUID form, taken from the subscription system; address one with a leading underscore in the URL, as
@@ -76,18 +87,9 @@ Other item types keep the key as it is supplied.
 
 ### The item in expressions
 
-In a connector the item is available as `self` (also `item`). Its parts follow the json:api structure of the item:
-
-| Expression | Content |
-|---|---|
-| `self.data.key` | The natural key |
-| `self.data.id` | The numeric id |
-| `self.data.type` | The item type path, such as `yourhosting/hosting/domain` |
-| `self.attributes.<name>` | An attribute of the item, such as `self.attributes.domain` of an incentive |
-| `self.meta.created_at` | When the item was created |
-| `self.links.self` | The URL of the item in the API |
-| `self.relationships.<name>` | The related items under a relation name, see below |
-| `params.<key name>` | The key, under each name in `key-names` |
+In a connector the item is available as `self` (also `item`). Its parts follow the JSON:API structure of the item, as
+listed in [Expression language](language/expressions.md#the-item): `self.data.key`, `self.attributes.<name>`,
+`self.relationships.<name>` and more.
 
 The `status` connector, for example, reads the subscription category from the domain's attributes with
 `self.attributes.subscription.category`. The incentive connectors read the domain they check from
@@ -151,7 +153,7 @@ Each relation between two items is stored once per relation type. Relation names
 
 ### Creating relations
 
-Relations are created when an item is posted with a `relationships` member, in json:api form. Each relation names the
+Relations are created when an item is posted with a `relationships` member, in JSON:API form. Each relation names the
 item type path and the numeric id of the related item:
 
 ```json

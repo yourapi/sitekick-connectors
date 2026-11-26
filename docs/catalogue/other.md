@@ -51,16 +51,15 @@ Designed for general information about a server. The definition sets only its da
 
 ### plesk
 
-Designed for Plesk data that a server pushes to the platform. The connector reads the pushed data by its key, and its
-requirement is designed to reject data that was not sent by the server itself.
+Designed for Plesk data that a server pushes to the platform. The connector reads the pushed data by its key and
+stores the host name, IP address and MAC address of the server.
 
 | Entry | Value |
 |---|---|
 | Data form | `StrInt` |
 | Refresh | `never` |
 | Parameters | `key`: the key of the pushed data |
-| Requires | `functions.hosting.server.validation.check_server_ip(raw_data)` (403) |
-| Functions | `functions.data.get_pushed_data`, `functions.hosting.server.validation.check_server_ip` |
+| Functions | `functions.data.get_pushed_data` |
 | Properties | `min_refresh_time: 2592000` (30 days); `max_timestamps: 10` |
 | Stores | Indexed fields |
 
@@ -267,7 +266,9 @@ Subscriptions are pushed for a domain and linked to it by the domain connector
 
 ### attributes
 
-The attributes of a subscription, set through the API.
+The attributes of a subscription, set through the API. They are defined in a separate file, `attributes.yaml`, instead
+of in an `attributes` section of `_entity.yaml`; both forms define the same `attributes` connector (see
+[Entities and relations](../entities-and-relations.md#attributes-in-a-separate-file)).
 
 | Entry | Value |
 |---|---|
@@ -310,7 +311,7 @@ this item type holds its customers.
 
 ### attributes
 
-The attributes of a customer, set through the API, with the same fields as the
+The attributes of a customer, set through the API and defined in `attributes.yaml`, with the same fields as the
 [subscription attributes](#attributes): `start_date`, `end_date`, `cancel_date`, `product_slug` (str), and
 `contract_period` and `billing_period` (int). Data form `JsonStrInt`; all supplied data is also stored as JSON;
 refresh `never`.
@@ -327,7 +328,8 @@ reference and are not extended.
 
 ## Development and test connectors
 
-Folder `sitekick/dev`. These item types and connectors test the connector engine; they hold no business data.
+Folder `sitekick/dev`. These item types and connectors test the connector engine; they hold no business data and are
+meant for development and test environments.
 
 ### exception
 
@@ -338,14 +340,15 @@ Folder `sitekick/dev`. These item types and connectors test the connector engine
 
 ### require
 
-Tests includes, requirements, parameters and refresh expressions in a chain of three connectors.
+Tests includes, requirements, parameters and refresh expressions in a chain of three connectors. `c.yaml` is a test
+connector for requirements combined with includes.
 
 | File | Includes | Requires | Indexed fields | Refresh |
 |---|---|---|---|---|
 | `_entity.yaml` | — | — | Item type with the key name `required`; attributes `JsonStrInt`, refresh `never` | — |
 | `a.yaml` | — | — | `a1`, `a2` (int), from the parameters `a1` (default `1`) and `a2` (default `2`) | `every: << "1 week" if not index.a1 else "2 months" >>` |
 | `b.yaml` | `a` | `include.a.attributes.a1 >= 1` (404) | `b1`, `b2` (int), copied from `a` through parameters | as `a` |
-| `c.yaml` | `a`, `b` | a list of connector names | `c1`, `c2` (int), copied from `b` through parameters | as `a` |
+| `c.yaml` | `a`, `b` | a list with the names `a` and `b` | `c1`, `c2` (int), copied from `b` through parameters | as `a` |
 
 All three connectors use the data form `StrInt`.
 

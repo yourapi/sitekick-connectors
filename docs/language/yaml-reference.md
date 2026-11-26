@@ -131,7 +131,7 @@ Free text that describes the connector. It is used as the description of the con
 of the API.
 
 ```yaml
-description: The homepage of the domain, resolve the url based on the domain
+description: The homepage of the domain, resolved from the domain name as a browser does
 ```
 
 ### params
@@ -234,8 +234,9 @@ index:
     ```
 
 - A field written as only a type, such as `ipv6: -> float` in `internet_nl`, declares a column without an expression.
-  Its value is taken from the field with the same name in the JSON value of the data point, or from data written to
-  the data point by the platform.
+  Its value is taken from the field with the same name in the JSON value of the data point: the value of the `json`
+  key, or the data written to the data point, such as the attributes posted with an item (see
+  [Storage of results](../storage.md#fields-without-an-expression)).
 - `int` columns are small integers: values are limited to the range -32767 to 32767.
 - After this key, `index` holds the evaluated fields, so a refresh rule can use `index.category`.
 
@@ -343,8 +344,25 @@ requires(424): << final_url >>
 url: https://api.example.com/v1/urltoimage
 ```
 
-A key hides a helper of the same name for the keys below it. Do not name keys `functions`, `f`, `get`, `regex`,
-`datetime` or `arrow`; see [Expression language](expressions.md#names-available-in-expressions).
+### Reserved names
+
+The result of every top-level key is available under its name to the keys below it, and hides a name of the platform
+that is spelled the same. The platform provides these names to expressions; do not use them for intermediate keys:
+
+| Name | Provided by the platform | As a key |
+|---|---|---|
+| `self`, `item`, `this`, `parent` | The item the connector is evaluated for | Hides the item |
+| `params` | The parameters of the request and the key names of the item type | The keyword [`params`](#params): its result becomes `params` |
+| `include` | The included data points | The keyword [`include`](#include) |
+| `functions`, `f` | The library of hosting functions | Hides the library |
+| `get` | Asynchronous HTTP GET | Hides the function |
+| `regex` | The `regex` module | Hides the module |
+| `json` | Python's `json` module | The keyword [`json`](#json): later keys see the stored value instead of the module |
+| `datetime` | Python's `datetime` module | Hides the module |
+| `arrow` | The `arrow` library | Hides the library |
+
+Python's built-in functions, such as `len`, `min` and `round`, are hidden in the same way. What each name holds is
+described in [Expression language](expressions.md#names-available-in-expressions).
 
 ## A complete example
 

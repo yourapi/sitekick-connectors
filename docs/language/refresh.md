@@ -123,7 +123,7 @@ Use a moment in the future: a moment in the past makes the data point due at onc
 | `timing`, `internet_nl` | `every: ~month` | Once a month, on a random day, at night |
 | `dns` | `every: << "3 ~months" if not index.a1 else "1 ~month" >>` | Monthly, or quarterly for domains without an A record |
 | `status` | `every: << '~month' if index.category != 'active' else '6 ~months' >>` | Monthly until the website is active, then twice a year |
-| `ssl`, `website`, `m365` (incentives) | `every: << "day" if not index.valid else "3 months" >>` | Daily until the check passes, then every three months |
+| `your.online/commercial/incentive/ssl`, `website`, `m365` | `every: << "day" if not index.valid else "3 months" >>` | Daily until the check passes, then every three months |
 | `availability`, `sleep`, `multi` | `refresh: on-demand` | Evaluated on every request |
 | `plesk` (server), `subscription` | `refresh: never` | Only on access |
 | `pagespeed`, `whois` | No rule | The default interval |
@@ -137,8 +137,7 @@ evaluated: the platform schedules the status data point with the rule as it is w
 - A literal rule, such as `every: ~month`, applies as usual.
 - Without a rule, the default interval applies.
 
-Status data points are scheduled with the rule as written in the file. Give a connector a literal rule when its status
-data points must be retried on a schedule.
+Give a connector a literal rule when its status data points must be retried on a schedule.
 
 ## Refresh on access
 
@@ -171,8 +170,8 @@ GET https://api.example.com/yourhosting/hosting/domain/example.com/timing?refres
     ```
 
 - **Includes.** The parameters of the request, including `refresh` and `max-refresh-level`, are passed on to included
-  connectors, so `refresh=now` also refreshes the included data points (see
-  [Includes and requires](includes-and-requires.md#how-an-include-is-fetched)).
+  connectors, so `refresh=now` also refreshes the included data points. The cases in which an included data point is
+  refreshed are listed in [Includes and requires](includes-and-requires.md#how-an-include-is-fetched).
 - **Identical requests** for the same data point and parameters that arrive while a refresh is running wait for that
   refresh instead of starting another.
 
@@ -183,6 +182,16 @@ with `wait=false` use the lower background priority, so they use the capacity th
 
 ## Scheduled refresh
 
-The scheduler runs every minute by default and requests each data point whose refresh moment has passed. A scheduled refresh also refreshes the directly included data points that are older than an
-hour; deeper includes are read as stored. Each data point therefore follows its own rule, and a connector that is
-mostly used through includes still needs a sensible rule of its own.
+The scheduler runs every minute by default and requests each data point whose refresh moment has passed, with
+`refresh=1h` and `max-refresh-level=1`; both are passed on to its includes. As for every include (see
+[Includes and requires](includes-and-requires.md#how-an-include-is-fetched)), an included data point is refreshed
+first:
+
+- when it does not exist yet;
+- when its connector is `on-demand`;
+- when the request asks for it with `refresh=now` or `refresh=<interval>`, which is passed on to the include;
+- in a scheduled refresh, when it is a direct include (include level 1) whose last refresh is more than an hour ago.
+
+`max-refresh-level=1` limits these refreshes to the direct includes; deeper includes are read as stored. Each data
+point therefore follows its own rule, and a connector that is mostly used through includes still needs a sensible rule
+of its own.

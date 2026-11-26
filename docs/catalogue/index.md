@@ -38,23 +38,26 @@ The columns of the tables below:
 | Status | Meaning |
 |---|---|
 | production | Part of the production set of connectors |
+| planned | The definition describes an intended use: its purpose starts with "Designed for". It is not part of the production set |
 | utility | Supports other connectors or requests; does not collect data about an item |
-| test | Used to test the connector engine; no business data |
+| test | Used to test the connector engine, in development and test environments; no business data |
 | legacy | Kept for reference from an earlier use of the platform; not extended |
 
-A purpose that starts with "designed for" describes the intended use of the connector.
+A purpose that starts with "Designed for" describes the intended use of the connector.
 
 ### Pseudo-connectors
 
-`multi` and `hubspot` are pseudo-connectors. They do not collect data, but act as modifiers that come *before* the
-connector name in the URL:
+`multi` and `hubspot` are pseudo-connectors. They do not collect data, but act as prefix modifiers: pseudo-connectors
+that precede the connector name in the URL, while most modifiers follow it (see
+[Modifier](../concepts.md#modifier)):
 
 ```text
 /yourhosting/hosting/domain/example.com/multi/dns,whois,ssl
 /yourhosting/hosting/domain/example.com/hubspot/pagespeed
 ```
 
-`multi` requests the listed connectors in parallel and returns their results in one object, keyed by connector.
+`multi` requests the listed connectors in parallel and returns their results in one object, keyed by the connector
+names as written in the URL, each with its modifier, if any.
 `hubspot` requests the connector within the timeout set in its definition, and answers with the fallback status of its
 definition when the connector takes longer. See [multi](hosting-domain.md#multi) and
 [hubspot](hosting-domain.md#hubspot).
@@ -81,7 +84,7 @@ definition when the connector takes longer. See [multi](hosting-domain.md#multi)
 | `hosting/domain/cms.yaml` | [`cms`](hosting-domain.md#cms) | CMS of the website, its version and security status | default | production |
 | `hosting/domain/copyright.yaml` | [`copyright`](hosting-domain.md#copyright) | Most recent copyright year on the homepage | default | production |
 | `hosting/domain/google_analytics.yaml` | [`google_analytics`](hosting-domain.md#google_analytics) | Google Analytics or Tag Manager on the homepage, with type and tracking id | default | production |
-| `hosting/domain/seo.yaml` | [`seo`](hosting-domain.md#seo) | Designed for an SEO analysis of the homepage | default | production |
+| `hosting/domain/seo.yaml` | [`seo`](hosting-domain.md#seo) | Designed for an SEO analysis of the homepage | default | planned |
 | `hosting/domain/dns.yaml` | [`dns`](hosting-domain.md#dns) | DNS records: first A record and its host name, name server, mail server; full lookup as a file | `1 ~month`, `3 ~months` without A record | production |
 | `hosting/domain/whois.yaml` | [`whois`](hosting-domain.md#whois) | Registrar, name servers, creation and expiration date | default | production |
 | `hosting/domain/hosting_by_dns.yaml` | [`hosting_by_dns`](hosting-domain.md#hosting_by_dns) | Compares the name servers in whois with those in DNS | default | production |
@@ -107,11 +110,11 @@ definition when the connector takes longer. See [multi](hosting-domain.md#multi)
 | Path | Connector | Purpose | Refresh | Status |
 |---|---|---|---|---|
 | `hosting/server/_entity.yaml` | [`_entity`](other.md#servers) | Item type server: identified by IP address; name, brand, CPUs, memory, disks; relation to platform | never | production |
-| `hosting/server/ipapi.yaml` | [`ipapi`](other.md#servers) | Designed for network and location data for the server's IP address | default | production |
-| `hosting/server/info.yaml` | [`info`](other.md#servers) | Designed for general server information | default | production |
-| `hosting/server/plesk.yaml` | [`plesk`](other.md#servers) | Designed for Plesk data pushed by the server: host name, IP and MAC address | never | production |
-| `hosting/server/server.yaml` | [`server`](other.md#servers) | Designed for uptime, memory and CPU data pushed by the server | default | production |
-| `hosting/network/_entity.yaml` | [`_entity`](other.md#networks-and-platforms) | Item type network, without own attributes | — | production |
+| `hosting/server/ipapi.yaml` | [`ipapi`](other.md#servers) | Designed for network and location data for the server's IP address | default | planned |
+| `hosting/server/info.yaml` | [`info`](other.md#servers) | Designed for general server information | default | planned |
+| `hosting/server/plesk.yaml` | [`plesk`](other.md#servers) | Designed for Plesk data pushed by the server: host name, IP and MAC address | never | planned |
+| `hosting/server/server.yaml` | [`server`](other.md#servers) | Designed for uptime, memory and CPU data pushed by the server | default | planned |
+| `hosting/network/_entity.yaml` | [`_entity`](other.md#networks-and-platforms) | Item type network, without attributes of its own | — | production |
 | `hosting/platform/_entity.yaml` | [`_entity`](other.md#networks-and-platforms) | Item type hosting platform; its relations are declared by domains and servers | — | production |
 | `global/setting/_entity.yaml` | [`_entity`](other.md#global-settings) | Item type for global settings, such as the state of a synchronisation | never | production |
 | `public/get/_entity.yaml` | [`_entity`](other.md#public-item-types) | Item type in the group `public`, with free JSON attributes | never | production |
@@ -141,9 +144,9 @@ item types and connectors.
 | Path | Connector | Purpose | Refresh | Status |
 |---|---|---|---|---|
 | `commercial/action/_entity.yaml` | [`_entity`](other.md#incentive-programme) | Item type action: one action of an employee for an incentive | never | production |
-| `commercial/action/aggregate.yaml` | [`aggregate`](other.md#incentive-programme) | Designed for counting the unique actions | default | production |
+| `commercial/action/aggregate.yaml` | [`aggregate`](other.md#incentive-programme) | Designed for counting the unique actions | default | planned |
 | `commercial/incentive/_entity.yaml` | [`_entity`](other.md#incentive-programme) | Item type incentive: employee, domain and topic, with date fields for reporting | never | production |
-| `commercial/incentive/domain.yaml` | [`domain`](other.md#incentive-programme) | Topic: extra TLDs registered for the domain name | daily in the first three months | production |
+| `commercial/incentive/domain.yaml` | [`domain`](other.md#incentive-programme) | Topic: extra TLDs registered for the domain name | designed to check daily during the first three months after the incentive was created | production |
 | `commercial/incentive/m365.yaml` | [`m365`](other.md#incentive-programme) | Topic: e-mail handled by Microsoft 365 | daily until valid, then `3 months` | production |
 | `commercial/incentive/ssl.yaml` | [`ssl`](other.md#incentive-programme) | Topic: valid certificate and https | daily until valid, then `3 months` | production |
 | `commercial/incentive/ssl_https.yaml` | [`ssl_https`](other.md#incentive-programme) | Topic: valid certificate and https (same check as `ssl`) | daily until valid, then `3 months` | production |
@@ -153,14 +156,14 @@ item types and connectors.
 | `contact/email/_entity.yaml` | [`_entity`](other.md#incentive-programme) | Item type employee, identified by e-mail address | never | production |
 | `crm/template/_entity.yaml` | [`_entity`](other.md#crm-templates) | Item type CRM template, with free JSON attributes | never | production |
 | `hosting/subscription/_entity.yaml` | [`_entity`](other.md#subscriptions) | Item type subscription, identified by UUID; belongs to one domain | — | production |
-| `hosting/subscription/attributes.yaml` | [`attributes`](other.md#subscriptions) | Dates, product and periods of the subscription | never (API) | production |
-| `hosting/subscription/retrieve.yaml` | [`retrieve`](other.md#subscriptions) | Designed for registering a pushed subscription on the subscription itself | never | production |
+| `hosting/subscription/attributes.yaml` | [`attributes`](other.md#subscriptions) | Attributes of the item type, in a separate file: dates, product and periods of the subscription | never (API) | production |
+| `hosting/subscription/retrieve.yaml` | [`retrieve`](other.md#subscriptions) | Designed for registering a pushed subscription on the subscription itself | never | planned |
 | `product/domain/_entity.yaml` | [`_entity`](other.md#products) | Item type domain product | never | production |
 | `product/email/_entity.yaml` | [`_entity`](other.md#products) | Item type e-mail product | never | production |
 | `product/hosting/_entity.yaml` | [`_entity`](other.md#products) | Item type hosting product | never | production |
 | `product/subscription/_entity.yaml` | [`_entity`](other.md#products) | Item type subscription product | never | production |
 | `sandwave/customer/_entity.yaml` | [`_entity`](other.md#sandwave-customers) | Item type customer in Sandwave, with its subscriptions and domains | — | production |
-| `sandwave/customer/attributes.yaml` | [`attributes`](other.md#sandwave-customers) | Dates, product and periods of the customer | never (API) | production |
+| `sandwave/customer/attributes.yaml` | [`attributes`](other.md#sandwave-customers) | Attributes of the item type, in a separate file: dates, product and periods of the customer | never (API) | production |
 
 ## Client `parker`
 

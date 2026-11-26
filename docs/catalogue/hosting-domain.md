@@ -4,10 +4,10 @@ title: Domain connectors
 
 # Domain connectors
 
-This page describes every connector of the item type `hosting/domain`: the 36 files in `sitekick/hosting/domain/` and
+This page describes every connector of the item type `hosting/domain`: the files in `sitekick/hosting/domain/` and
 the overrides in `argeweb/hosting/domain/`. The key of a domain item is its domain name; a connector reads it as
-`params.domain`. For the keywords used below, see the [YAML reference](../language/yaml-reference.md); for the storage
-tiers (indexed fields, JSON, files), see [Storage](../storage.md).
+`params.domain`. For the keywords used below, see the [Connector YAML reference](../language/yaml-reference.md); for
+indexed fields, JSON and files, see [Storage of results](../storage.md).
 
 Each connector is described with:
 
@@ -15,7 +15,7 @@ Each connector is described with:
 |---|---|
 | Data form | The `type` of the connector, which sets the available storage columns |
 | Refresh | The refresh rule; "default" is the platform's default interval (see [Refresh rules](../language/refresh.md)) |
-| Includes | Connectors of the same domain that are fetched first (see [Includes and requirements](../language/includes-and-requires.md)) |
+| Includes | Connectors of the same domain that are fetched first (see [Includes and requires](../language/includes-and-requires.md)) |
 | Requires | The condition that must hold, with the status stored when it does not |
 | Functions | The platform functions called, by dotted name |
 | External service | The outside service that provides the data |
@@ -89,8 +89,8 @@ order, follows redirects and meta refreshes, and keeps the first address that re
 | `final_url` | str | The address after all redirects, for example `https://www.example.com/` |
 | `final_domain` | str | The domain of the final address, for example `example.com` |
 | `https` | int | 1 when the final address uses https, else 0 |
-| `http_redirected` | int | The number of redirects followed to reach the final address, including meta refreshes |
-| `redirects` | int | The HTTP status code of the first redirect, for example `301` |
+| `http_redirected` | int | The number of redirects followed to reach the final address; a meta refresh counts as one redirect |
+| `redirects` | int | The HTTP status code of the first redirect, for example `301`; `303` when the first redirect is a meta refresh; empty without redirects |
 | `domain_redirected` | int | 1 when the final domain differs from the domain itself, else 0 |
 
 ### detailed_homepage
@@ -109,8 +109,8 @@ and `www.` are set up.
 | Indexed field | Type | Meaning |
 |---|---|---|
 | `final_url` | str | The final address of the first combination that responds (order `https`, `https-www`, `http`, `http-www`) |
-| `https` | int | 1 when the website supports https, else 0 |
-| `http_redirected` | int | 1 when a request over http is redirected to https, else 0 |
+| `https` | int | Designed for: 1 when the website supports https, else 0. The JSON field `https_supported` holds this value |
+| `http_redirected` | int | 1 when a request to `http://` or `http://www.` ends at an https address, else 0 |
 | `www_supported` | int | 1 when the `www.` address works, else 0 |
 | `redirected_to_www` | int | 1 when all addresses end at the `www.` address, else 0 |
 
@@ -212,7 +212,9 @@ Identical to [certificate](#certificate), for the host name `www.` plus the doma
 
 ### ssl
 
-A combined view of https and the certificate, built from five other connectors. It is the basis of the SSL advice.
+A combined view of https and the certificate, built from five other connectors. Its `youradvice` view
+(`.../example.com/ssl/youradvice`, see [Modifier](../concepts.md#modifier)) turns these fields into an advice about
+the certificate and https set-up of the website.
 
 | Entry | Value |
 |---|---|
@@ -225,8 +227,8 @@ A combined view of https and the certificate, built from five other connectors. 
 |---|---|---|
 | `category` | str | The category from [status](#status) |
 | `final_url` | str | The final address, from [homepage](#homepage) |
-| `https` | int | 1 when the website supports https, from [detailed_homepage](#detailed_homepage) |
-| `http_redirected` | int | 1 when http is redirected to https, from [detailed_homepage](#detailed_homepage) |
+| `https` | int | 1 when the website supports https: `https_supported` of [detailed_homepage](#detailed_homepage) |
+| `http_redirected` | int | `http_redirected` of [detailed_homepage](#detailed_homepage): 1 when a request over http ends at an https address |
 | `www_consistent` | int | 1 when the addresses with and without `www.` end at the same website |
 | `domain_redirected` | int | 1 when the domain redirects to another domain, from [homepage](#homepage) |
 | `issuer` | str | The issuer of the certificate of the domain |
@@ -329,7 +331,7 @@ The function decides in this order:
 |---|---|
 | `active` | A website with its own content |
 | `initiated` | Building a website was started but abandoned, for example a default page of a web server or control panel |
-| `installed` | A CMS is installed without own content, for example a new WordPress site with only its default sample post |
+| `installed` | A CMS is installed without content of its own, for example a new WordPress site with only its default sample post |
 | `parked` | A standard landing page of a registrar or hosting provider; there is no website |
 | `outdated` | Active, but built with outdated technology, such as FrontPage frames |
 | `forsale` | The domain is offered for sale, for example through a domain broker |
@@ -383,7 +385,7 @@ The checks are made in this order; the first that applies sets the category. Whe
 | `no_dns` | The domain is registered, but no DNS data is available |
 | `no_nameserver` | There is DNS data, but no name server |
 | `no_a_record` | There is DNS data, but no A record, so no website |
-| `no_your_online_webserver` | The name servers do not belong to one of the brands of the your.online group |
+| `no_your_online_webserver` | The name servers do not belong to one of the brands of the Your.Online group |
 | `no_valid_website` | All checks pass, but no website category is available |
 
 A category that starts with `no_` means that the website is not available, or is not hosted by one of the brands.
@@ -493,8 +495,11 @@ generic names, so that numbered name servers are recognised as one provider, for
 | `mx1` | str | The first mail server |
 
 `full.json` contains the records per type (`a`, `aaaa`, `ns`, `mx`, `txt`, ...), the host names of the addresses
-(`a_fqdn`, `aaaa_fqdn`), and a section `generic` with the first values and their generic names, such as `ns1_short`,
-`mx1_short` and `a_fqdn1_short`. To make one of these fields available for filtering, add it to the `index` section.
+(`a_fqdn`, `aaaa_fqdn`), and a section `generic`. For name servers and mail servers, `generic` holds the list of values
+(`ns`, `mx`, with the mail servers in order of priority), the first value (`ns1`, `mx1`) and their generic names
+(`ns_short`, `ns1_short`, `mx_short`, `mx1_short`); for addresses, the sorted list (`a`, `aaaa`), the first address
+(`a1`, `aaaa1`) and its host name with its generic name (`a_fqdn1`, `a_fqdn1_short`). To make one of these fields
+available for filtering, add it to the `index` section.
 
 ### whois
 
@@ -701,15 +706,16 @@ sets the `brand` attribute of the domain, with `yourhosting` as the default bran
 | Functions | `functions.hosting.update_subscription` |
 | Stores | JSON: the key of the subscription item |
 
-The section `item.meta.created_at` is designed to set the creation date of the item to the start date of the
-subscription.
+The definition also has a section `item.meta.created_at`, designed for setting the creation date of the item to the
+start date of the subscription.
 
 ## Pseudo-connectors
 
 ### multi
 
 Requests several connectors of the same domain in parallel and returns their results in one object, keyed by the
-requested path. The connector names follow `multi/` in the URL, separated by commas, and may carry a modifier:
+connector names as written in the URL, each with its modifier, if any. The connector names follow `multi/` in the
+URL, separated by commas, and may carry a modifier:
 
 ```http
 GET https://api.example.com/yourhosting/hosting/domain/example.com/multi/dns,whois,pagespeed/public
@@ -740,11 +746,12 @@ GET https://api.example.com/yourhosting/hosting/domain/example.com/hubspot/pages
 
 ## Test connectors
 
-These connectors test the connector engine. They do not collect data about a domain.
+These connectors test the connector engine and are meant for development and test environments. They do not collect
+data about a domain.
 
 ### sleep
 
-Waits for `seconds` seconds (default 10) and stores nothing. It is used to test time-outs and parallel requests.
+Waits for `seconds` seconds (default 10) and stores nothing. It is used to test timeouts and parallel requests.
 
 | Entry | Value |
 |---|---|

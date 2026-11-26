@@ -101,9 +101,9 @@ refresh with `refresh=now`.
 ## Queue
 
 Refreshes do not run inside the request. The platform puts them on a priority queue, and workers take them from the
-queue and evaluate the connector. Refreshes that a caller waits for go before background refreshes.
-Each include level has its own queue,
-so a connector that waits for its includes never blocks the workers that compute them. A request waits a limited time
+queue and evaluate the connector. Refreshes that a caller waits for go before background refreshes. Each
+[include level](language/includes-and-requires.md#include-levels) has its own queue, so a connector that waits for its
+includes never blocks the workers that compute them. A request waits a limited time
 for the result, and answers `202 Accepted` if the refresh takes longer.
 
 ## History
@@ -130,7 +130,23 @@ import.
 
 ## Modifier
 
-A **modifier** follows the connector in the URL and presents the data point in another form: `history`, `public` (with
-the internal id replaced by the UUID), `file/<name>` (a stored file), or a view for one application, a backend for
-frontend (BFF), such as `youradvice`. A connector can name a default view with the `bff` keyword. See the
+A **modifier** presents a data point in another form. Most modifiers follow the connector in the URL: `/history`,
+`/public` (with the internal id replaced by the UUID), `/file/<name>` (a stored file), or a view for one application, a
+backend for frontend (BFF), such as `/youradvice`:
+
+```text
+/yourhosting/hosting/domain/example.com/dns/history
+```
+
+A connector can name a default view with the `bff` keyword. See the
 [recipes](recipes.md#a-connector-with-a-default-view).
+
+`multi` and `hubspot` are **prefix modifiers**: pseudo-connectors that precede the connector name in the URL. `multi`
+requests several connectors at once, `hubspot` requests one connector within a time limit:
+
+```text
+/yourhosting/hosting/domain/example.com/multi/dns,whois
+/yourhosting/hosting/domain/example.com/hubspot/pagespeed
+```
+
+Both are described in [Domain connectors](catalogue/hosting-domain.md#pseudo-connectors).

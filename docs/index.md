@@ -5,7 +5,7 @@ title: Sitekick connectors
 # Sitekick connectors
 
 This repository holds the connector definitions for the Sitekick hosting intelligence platform. Sitekick collects data
-about domains, websites, servers and customers, keeps the history of that data and serves it through a json:api-style
+about domains, websites, servers and customers, keeps the history of that data and serves it through a JSON:API-style
 API. A connector defines, for one kind of data, the data source, the processing and validation rules, what is stored
 and when it is refreshed.
 
@@ -37,8 +37,11 @@ refresh:
     every: << '3 ~months' if not index.a1 else '1 ~month' >>
 ```
 
-Placed at `sitekick/hosting/domain/dns.yaml`, this file defines the connector `dns` for domains. A request for
-`/yourhosting/hosting/domain/example.com/dns` returns its result. The platform refreshes it once a month at a random
+Placed at `sitekick/hosting/domain/dns.yaml`, this file defines the connector `dns` for domains. Its `type` selects
+the [data form](storage.md#data-forms): the set of columns in which the result is stored. The domain name is available
+to the expressions as [`params.domain`](language/yaml-reference.md#params). A request for
+`/yourhosting/hosting/domain/example.com/dns` returns its result; `yourhosting` is the client (brand) that asks, see
+[How the repository is organised](#how-the-repository-is-organised). The platform refreshes it once a month at a random
 moment, or once every three months for a domain without an A record. The [concepts](concepts.md) page explains the
 terms; the [YAML reference](language/yaml-reference.md) lists every keyword.
 
@@ -62,7 +65,7 @@ The top-level folders belong to clients (brands) of the platform:
 | `sitekick/` | `sitekick`, the root client | Item types and connectors available to every client: `hosting/domain` (the website and domain tests), `hosting/server`, `hosting/platform`, `hosting/network`, settings, and connectors for development and testing |
 | `your.online/` | `your.online` | Connectors of the Your.Online hosting group: commercial incentives and actions, contacts, hosting subscriptions, products and customers |
 | `argeweb/` | `argeweb` | The Argeweb brand, with its own domain item type |
-| `parker/` | `parker` | Item types for analytical devices and their measurements |
+| `parker/` | `parker` | Legacy: item types for analytical devices and their measurements |
 
 Clients form a tree, with `sitekick` at the root. When the platform looks up a connector for a client and the client
 has no connector with that name, it looks at the parent client, and so on up to `sitekick`. A client therefore
@@ -120,18 +123,19 @@ Authorization: Bearer <token>
 
 ## Reading guide
 
-| Page | Read it for |
-|---|---|
-| [Concepts](concepts.md) | The vocabulary: items, item types, connectors, data points, clients, includes, refresh, history |
-| [Entities and relations](entities-and-relations.md) | Item types, keys, `_entity.yaml` and relations between items |
-| [Storage of results](storage.md) | Data forms, indexed fields, JSON, files and history |
-| [Secrets in connectors](secrets.md) | Encrypted API keys in connector files |
-| [YAML reference](language/yaml-reference.md) | Every keyword of a connector definition |
-| [Expression language](language/expressions.md) | The `<< ... >>` expressions, casts, `@suppress` and the names available in expressions |
-| [Includes and requires](language/includes-and-requires.md) | Combining connectors, and stopping when data is missing |
-| [Refresh rules](language/refresh.md) | When a data point is computed again |
-| [Recipes](recipes.md) | Short worked examples to start a new connector from |
-| [Catalogue](catalogue/index.md) | The connectors in this repository and their fields: [domain connectors](catalogue/hosting-domain.md) and [other connectors](catalogue/other.md) |
+| Section | Page | Read it for |
+|---|---|---|
+| Getting started | [Writing your first connector](getting-started.md) | A first connector, from file to stored data point and pull request |
+| | [Recipes](recipes.md) | Short worked examples to start a new connector from |
+| Concepts | [Concepts](concepts.md) | The vocabulary: items, item types, connectors, data points, clients, includes, refresh, history |
+| | [Entities and relations](entities-and-relations.md) | Item types, keys, `_entity.yaml` and relations between items |
+| | [Storage of results](storage.md) | Data forms, indexed fields, JSON, files and history |
+| Connector language | [Connector YAML reference](language/yaml-reference.md) | Every keyword of a connector definition |
+| | [Expression language](language/expressions.md) | The `<< ... >>` expressions, casts, `@suppress` and the names available in expressions |
+| | [Includes and requires](language/includes-and-requires.md) | Combining connectors, and stopping when data is missing |
+| | [Refresh rules](language/refresh.md) | When a data point is computed again |
+| | [Secrets in connectors](secrets.md) | Encrypted API keys in connector files |
+| Catalogue | [Connector catalogue](catalogue/index.md) | The connectors in this repository and their fields: [Domain connectors](catalogue/hosting-domain.md) and [Other connectors](catalogue/other.md) |
 
 How the platform loads, validates and runs connectors in more depth, and how to install it, is described in the
 Sitekick platform documentation.

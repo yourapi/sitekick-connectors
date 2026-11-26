@@ -10,8 +10,9 @@ Python functions that connectors call live in the platform.
 The documentation is published at <https://yourapi.github.io/sitekick-connectors/> and is built from `docs/` with
 MkDocs Material:
 
-- **Concepts**: items, item types, connectors, data points, clients, includes, refresh and history.
-- **Connector language**: the YAML reference, the expression language, includes and requires, refresh rules, recipes.
+- **Getting started**: writing your first connector, and recipes for common tasks.
+- **Concepts**: items, item types, connectors, data points, clients, includes, refresh, history and storage.
+- **Connector language**: the YAML reference, the expression language, includes and requires, refresh rules, secrets.
 - **Catalogue**: every connector in this repository.
 
 To preview the site locally (the configuration file is `_mkdocs.yml`: the platform's connector loader skips YAML
@@ -30,5 +31,5 @@ Each file is stored as `<client>/<item type group>/<item type>/<connector>.yaml`
 | `sitekick/` | Connectors of the root client, available to all clients: domain, server and network checks, settings, public data |
 | `your.online/` | Connectors of the Your.Online group and its brands: incentives, reports, contacts, products, subscriptions |
 | `argeweb/` | Connectors specific to the Argeweb brand |
-| `parker/` | Legacy connectors |
+| `parker/` | Legacy item types |
 | `docs/` | The documentation site |

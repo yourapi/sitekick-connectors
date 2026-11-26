@@ -127,14 +127,18 @@ The type conversion after `->` takes place after the suppression and is not cove
 
 ### The item
 
-`self` (and `item`) holds the item in the JSON:API form of the platform:
+`self` (also `item`, `this` and `parent`) holds the item in the JSON:API form of the platform:
 
 | Expression | Content |
 |---|---|
-| `self.data.id`, `self.data.type`, `self.data.key` | Internal id, item type and key, such as `example.com` |
-| `self.attributes` | The item's own attributes, such as `self.attributes.subscription.category` in `status` |
-| `self.links.self` | The URL of the item |
+| `self.data.key` | The natural key, such as `example.com` |
+| `self.data.id` | The numeric id |
+| `self.data.type` | The item type path, such as `yourhosting/hosting/domain` |
+| `self.attributes.<name>` | An attribute of the item, such as `self.attributes.subscription.category` in `status`, or `self.attributes.domain` in the incentive connectors |
 | `self.meta.created_at` | When the item was created |
+| `self.links.self` | The URL of the item in the API |
+| `self.relationships.<name>` | The related items under a relation name, see [Entities and relations](../entities-and-relations.md#reading-relations) |
+| `params.<key name>` | The key, under each name in `key-names` of the item type |
 
 For the key of the item, prefer the key name: `params.domain` for a domain.
 
@@ -182,8 +186,8 @@ data_raw: << f.http.request.post(url, data=body, headers=headers).json() >>
 ### Names of keys
 
 A key hides a helper of the same name for the keys below it. After a `json` key, `json` is that value, so call
-`json.loads` above it. Do not give keys the names `functions`, `f`, `get`, `regex`, `datetime`,
-`arrow` or `params` unless you mean to replace them.
+`json.loads` above it. The names to keep free are listed in
+[Reserved names](yaml-reference.md#reserved-names).
 
 ## Asynchronous calls
 
@@ -254,8 +258,7 @@ Compute any other value that a comprehension needs in a key of its own, and iter
 An exception in an expression, that is not suppressed, stops the evaluation and the refresh fails. The stored values
 of the data point are not changed. The platform records the exception with the refresh and retries it later with
 increasing intervals, so a corrected connector is picked up on a later attempt. The response to a request that waited
-for the refresh names the failed refresh as `data-refresher/<id>`; the details are available to administrators of the
-platform.
+for the refresh reports that the refresh failed; the details are available to administrators of the platform.
 
 An unmet `requires` is not an error: the connector stops and stores a status, as described in
 [Includes and requires](includes-and-requires.md#requires).
@@ -266,6 +269,7 @@ An unmet `requires` is not an error: the connector stops and stores a status, as
 - Make one asynchronous call per expression; write `await` for functions from a `code` block.
 - Use `@suppress` with a named exception, only where a missing value is normal.
 - Give every `index` field a type conversion that fits a free column of the data form.
-- Keep helpers' names free; mind that a `json` key replaces the `json` module.
+- Keep the [reserved names](yaml-reference.md#reserved-names) free; mind that a `json` key replaces the `json`
+  module.
 - In comprehensions and lambdas, use earlier keys only in the first `for` clause.
 - Never put secrets in plain text; see [Secrets in connectors](../secrets.md).

@@ -87,8 +87,9 @@ index:
     action: -> str
 ```
 
-Such a field has no expression; its value is taken from the data written to the data point under the same name. This
-is how the attributes of an item type (in `_entity.yaml`) are stored: the attributes posted with an item fill the
+Such a field has no expression. Its value is taken from the field with the same name in the JSON value of the data
+point: the value of the connector's `json` key, or the data written to the data point, such as the attributes posted
+with an item. This is how the attributes of an item type are stored: the attributes posted with an item fill the
 indexed columns of the same name, and all posted attributes are stored in the JSON column if the data form has one.
 The `internet_nl` connector uses the same mechanism: it hands the item to an asynchronous, rate-limited checker,
 and the platform writes the scores to the data point when they arrive.
@@ -111,9 +112,9 @@ Dates and datetimes are stored as ISO 8601 strings. JSON fields appear next to t
 in the response, so keep the names of both distinct. They can be filtered on equality only; use an indexed field for
 anything else.
 
-The key translation table is also designed for JSON keys: it can map each long JSON key to a short name of one to three
-characters (`A`, `B`, ..., `v0`, ..., `w00`), which saves space when millions of rows share the same keys. JSON fields are
-returned under their own names.
+The design provides for using the key translation table for JSON keys as well: each long JSON key would be mapped to a
+short name of one to three characters (`A`, `B`, ..., `v0`, ..., `w00`), to save space when millions of rows share the
+same keys. JSON fields are returned under their own names.
 
 ## Files
 
@@ -163,17 +164,9 @@ content: << get(include.content.links.files['full.json']).json() if include.cont
 ## Status-only data points
 
 When a requirement is not met, the connector stops and the platform stores a data point that holds only a status
-code, in the `Empty` form. A request for it returns that code as its HTTP status:
-
-| Status | Written as | Meaning |
-|---|---|---|
-| 404 | `requires` | No information available for this item, for example no DNS records |
-| 424 | `requires(424)` | Failed dependency: data from another connector is missing |
-| 403 | `requires(403)` | Data rejected, for example pushed data that fails validation |
-| 410 | `requires(410)` | Gone: no refresh moment, timestamp or history version is recorded |
-
-The status-only data point is scheduled with the refresh rule as written in the file. See
-[Includes and requires](language/includes-and-requires.md).
+code, in the `Empty` form. A request for it returns that code as its HTTP status. The status codes and the rules for
+status-only data points are described in [Includes and requires](language/includes-and-requires.md#requires), and
+when they are refreshed again in [Refresh rules](language/refresh.md#status-data-points).
 
 ## History
 

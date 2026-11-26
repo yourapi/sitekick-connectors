@@ -55,8 +55,15 @@ the data point by its plain name.
 The platform fetches an include through its own API, as a client would: it requests `<item>/<name>` for the same item,
 one include level deeper than the current connector, with the current `params` as query parameters.
 
-- **Stored or refreshed.** The included data point is returned as stored. It is refreshed first when it does not exist
-  yet, when its connector is `on-demand`, or when the request asks for it.
+- **Stored or refreshed.** The included data point is returned as stored. It is refreshed first:
+    - when it does not exist yet;
+    - when its connector is `on-demand`;
+    - when the request asks for it with `refresh=now` or `refresh=<interval>`, which is passed on to the include;
+    - in a [scheduled refresh](refresh.md#scheduled-refresh), when it is a direct include (include level 1) whose last
+      refresh is more than an hour ago.
+
+    In each case the included data point is refreshed only up to the include level set by `max-refresh-level`, and not
+    while the `min_refresh_time` of its connector has not passed.
 - **Parameters are passed on.** The parameters of the current connector, including `refresh` and
   `max-refresh-level`, reach the included connectors. A request with `refresh=now` therefore also refreshes the
   included data points, down to the include level set by `max-refresh-level` (see [Refresh rules](refresh.md)).
@@ -72,7 +79,8 @@ Every include runs one level deeper than the connector that includes it: a reque
 own workers, for each level. A refresh that waits for its includes therefore never occupies the workers that must
 compute them.
 
-The longest chain in this repository is `ssl` → `status` → `category` → `content` → `homepage`, levels 0 to 4. The
+The longest chain in this repository starts at `sitekick/hosting/domain/ssl`: `ssl` → `status` → `category` →
+`content` → `homepage`, levels 0 to 4. The
 number of levels with workers is set by the operator of the platform; keep chains short.
 
 ```mermaid
@@ -128,9 +136,10 @@ Without such a test, the connector continues with empty values, which can be int
 requires: << dns >>
 ```
 
-The value is evaluated and tested for truth, as in a Python `if`. `None`, empty values, `0`, `False`, `''` and empty
-lists or mappings fail; any other value passes. The value is a condition or a value to test, not a list of connector
-names: a literal non-empty value always passes.
+The value is one expression: a condition, or a value to test. It is evaluated and tested for truth, as in a Python
+`if`. `None`, empty values, `0`, `False`, `''` and empty lists or mappings fail; any other value passes. For several
+conditions, use one requirement per condition with the numbered variants `requires0` … `requires9` (see
+[Variants](#variants)).
 
 ### Variants
 
@@ -150,14 +159,14 @@ than one requirement; each is evaluated at its own position.
 |---|---|---|
 | 404 | Not found: no information available for this item | `dns`, `homepage`, `detailed_homepage`, `certificate`, `timing`, `copyright` |
 | 424 | Failed dependency: data from another connector is missing | `pagespeed`, `content`, `links`, `cms`, `screenshot`, `google_analytics`, `copyright` |
-| 403 | Forbidden: the data is rejected, for example server data that fails validation | `plesk` (server) |
+| 403 | Forbidden: the data is rejected, for example pushed data that fails validation | |
 | 410 | Gone: the outcome is not recorded as a refresh; no refresh moment, timestamp or history version is written | |
 
 ### What happens when a requirement is not met
 
 1. Evaluation stops at the requirement; the keys below it are not evaluated.
-2. Instead of its data, the platform stores a data point that holds only the status. Its `status` attribute is the
-   code, and a request for the data point returns the code as its HTTP status.
+2. Instead of its data, the platform stores a data point that holds only the status, in the `Empty` data form. Its
+   `status` attribute is the code, and a request for the data point returns the code as its HTTP status.
 3. The status stays the current value of the data point until a later refresh meets the requirement and stores data
    again.
 
