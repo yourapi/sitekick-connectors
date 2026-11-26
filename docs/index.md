@@ -1,150 +1,141 @@
-# sitekick-connectors
+---
+title: Sitekick connectors
+---
 
-Connector definitions for the new sitekick platform. A connector defines the data source, processing and validation
-rules for a specific type of data.
+# Sitekick connectors
 
-# Overview
+This repository holds the connector definitions for the Sitekick hosting intelligence platform. Sitekick collects data
+about domains, websites, servers and customers, keeps the history of that data and serves it through a JSON:API-style
+API. A connector defines, for one kind of data, the data source, the processing and validation rules, what is stored
+and when it is refreshed.
 
-The Sitekick-api is an easily accessible API on any combination of subject domains. The user can easily define object
-types, their attributes and relations between objects.  
-The main use of the Sitekick-platform is integration of (external) data in one place. Using a [connector](#connectors),
-you can easily define the data to connect to.
+The connectors are configuration, not code: the platform loads these YAML files and evaluates them. The functions that
+connectors call, such as `functions.hosting.nslookup`, are part of the platform, not of this repository.
 
-# Entities
+## What a connector is
 
-# Connectors
+A connector is a YAML file with embedded Python expressions. It describes one data point of an item type, for example
+the `dns` data of a domain. The top-level keys are evaluated from top to bottom, and each key can use the result of the
+keys above it.
 
-## List of connectors
+```yaml
+type: StrInt                       # data form: four text and four small-integer columns
 
-### hosting|domain
+dns: << functions.hosting.nslookup(params.domain, 'common') >>
 
-#### category
+requires: << dns >>                # no DNS data: store status 404 and stop
 
-The category for the website, can be:
+index:                             # typed fields, stored in indexed columns
+    a1: << dns.generic.a1 >> -> str
+    ns1: << dns.generic.ns1 >> -> str
+    mx1: << dns.generic.mx1 >> -> str
 
-* parked
-* initiated
-* installed
-* outdated
-* unreachable
-* forsale
-* active
+simple-file:                       # the complete lookup, in object storage
+    full.json: << dns >>
 
-#### certificate
+refresh:
+    every: << '3 ~months' if not index.a1 else '1 ~month' >>
+```
 
-Data for the certificate, if it is present. Contains these fields:
+Placed at `sitekick/hosting/domain/dns.yaml`, this file defines the connector `dns` for domains. Its `type` selects
+the [data form](storage.md#data-forms): the set of columns in which the result is stored. The domain name is available
+to the expressions as [`params.domain`](language/yaml-reference.md#params). A request for
+`/yourhosting/hosting/domain/example.com/dns` returns its result; `yourhosting` is the client (brand) that asks, see
+[How the repository is organised](#how-the-repository-is-organised). The platform refreshes it once a month at a random
+moment, or once every three months for a domain without an A record. The [concepts](concepts.md) page explains the
+terms; the [YAML reference](language/yaml-reference.md) lists every keyword.
 
-* issuer: the full name of the issuer, like `Sectigo RSA Extended Validation Secure Server CA`, `R10` or `R11`
-* valid_from: the timestamp from which the certificate is valid. Client clock must not be before this timestamp, like
-  `2025-04-22T00:00:00Z`
-* valid_to: the timestamp until which the certificate is valid. Client clock must not be after this timestamp, like
-  `2026-05-22T00:00:00Z`
-* hostname: the published name for the website, like `www.domain.name`
-* common_name: the name of the certificate, like `*.domain.name`
-* ip: the ip address by which the host is reachable, like `31.7.0.224`
+## How the repository is organised
 
-#### cms
+The path of a file is the identity of the connector:
 
-Info on the CMS, if it can be determined.
+```text
+{client}/{item type group}/{item type}/{connector}.yaml
+sitekick/hosting/domain/dns.yaml   ->  sitekick/hosting/domain/dns
+```
 
-* description: _Zorg ervoor dat WordPress in elk geval veilig is door een upgrade naar 5.6.14 uit te voeren._
-* ok: _false_
-* score: 0-100
-* title: _WordPress is onveilig_
-* confidence: in the ascertainment of the cms, 0-100
-* name: common name of the CMS, like _WordPress_
-* status: status of the cms version, if known, like _insecure_
-* version: version of the cms, if known, like _5.6.9_
-* requiredVersion: (only for WordPress): upgrade to at least this version to ensure security, like _5.6.14_
-* recommendedVersion: (only for WordPress): like _6.7.1_
-* type: type of the CMS, if applicable, like _WordPress_
+Each item type folder has an `_entity.yaml` that defines the item type itself: its key names, its own attributes and
+its relations to other item types (see [Entities and relations](entities-and-relations.md)). Files whose name starts
+with `_` are not loaded as connectors.
 
-#### detailed_homepage
+The top-level folders belong to clients (brands) of the platform:
 
-Info on redirect from http to https, redirect from no subdomain to www etc.
+| Folder | Client | Content |
+|---|---|---|
+| `sitekick/` | `sitekick`, the root client | Item types and connectors available to every client: `hosting/domain` (the website and domain tests), `hosting/server`, `hosting/platform`, `hosting/network`, settings, and connectors for development and testing |
+| `your.online/` | `your.online` | Connectors of the Your.Online hosting group: commercial incentives and actions, contacts, hosting subscriptions, products and customers |
+| `argeweb/` | `argeweb` | The Argeweb brand, with its own domain item type |
+| `parker/` | `parker` | Legacy: item types for analytical devices and their measurements |
 
-#### dns
+Clients form a tree, with `sitekick` at the root. When the platform looks up a connector for a client and the client
+has no connector with that name, it looks at the parent client, and so on up to `sitekick`. A client therefore
+inherits every connector of the clients above it. It overrides one by placing a file with the same name in its own
+folder, next to its own `_entity.yaml`.
 
-#### domdetailer
+```mermaid
+flowchart TB
+    S["sitekick<br/>(sitekick/)"] --> Y["your.online<br/>(your.online/)"]
+    S --> P["parker<br/>(parker/)"]
+    Y --> YH["yourhosting<br/>(no folder: inherits everything)"]
+    YH --> A["argeweb<br/>(argeweb/)"]
+```
 
-#### domainvalue
-The estimated financial value of the domain, based on popularity and backlinks, with a proprietary algorithm. Returns:
-* value: the estimated semi-precise value in euros, like _4540842_
-* value_rounded: the estimated value, in two significant digits, like _4500000_
-* has_digit: is any digit in the domain name, true or false.
-* has_hyphen: is a hyphen present (which has a negative effect on the value), true or false
-* mozrank: the mozRank is an indicatoin of the quality and quantity of the backlinks, a logarithmic scale from 0 to 10
-* searchvol: the search volume for the domain name
-* words: number of identified separate words in the domain name
-* tld: the top level domain, without the dot, like _com_
-* creation_date: composite field with:
-  * date: date of creation, y-m-d, like _1999-05-19_
-  * total_days: the total numbers since creation, like _9387_
-  * years: number of years since creation
-  * months: and this number of months
+A request for `/yourhosting/hosting/domain/example.com/dns` uses `sitekick/hosting/domain/dns.yaml`, because neither
+`yourhosting` nor `your.online` defines its own `dns` connector. A brand such as `yourhosting` needs no folder of its
+own as long as the inherited connectors suffice.
 
-#### homepage
+## Using the API
 
-Simple data on the homepage, basically homepage resolving based on a domain.
+Every request needs a bearer token, issued per client by the operator of the platform. The examples use
+`https://api.example.com`; replace it with the address of your Sitekick installation.
 
-* https: does the website support https, 0 or 1
-* final_domain: the domain after possible redirects are followed, like _yourhosting.nl_
-* domain_redirected: is the final domain different from the original domain, 0 or 1
-* url: first resolved url after domain entry, like _https://yourhosting.nl_
-* redirects: first redirect status code, like _301_
-* final_url: final url after alal redirects are followed, like _https://www.yourhosting.nl/_
-* http_redirected: is a request to http redirected to https, 0 or 1
+```text
+https://api.example.com/{client}/{item type group}/{item type}/{key}[/{connector}[/{modifier}]]
+```
 
-#### rtr
+- **Client**: the brand, such as `yourhosting`. It determines which connectors apply and which items you see.
+- **Item type group and item type**: the subject, such as `hosting/domain` or `hosting/server`. The plural form
+  (`hosting/domains`) returns a list.
+- **Key**: the item. Use its natural key (`example.com`), its numeric id or its UUID.
+- **Connector**: the data point, such as `dns` or `timing`.
+- **Modifier**: an optional view of the data point, such as `history` or `file/full.json`.
 
-Real time registrar lookup, for availability of the domain.
+| Request | Result |
+|---|---|
+| `GET /yourhosting/hosting/domain/example.com` | The domain with its data points |
+| `GET /yourhosting/hosting/domain/12345` | The same domain, by its numeric id |
+| `GET /yourhosting/hosting/domain/<uuid>` | The same domain, by its UUID, which does not reveal the internal id |
+| `GET /yourhosting/hosting/domain/example.com/timing` | The `timing` data point |
+| `GET /yourhosting/hosting/domain/example.com/dns/history` | Every stored version of the `dns` data point |
+| `GET /yourhosting/hosting/domain/example.com/dns/file/full.json` | A file stored by the `dns` connector |
+| `GET /yourhosting/hosting/domain/example.com/timing?refresh=now` | The `timing` data point, refreshed first |
 
-* available: is the domain open for registering, 0 or 1
-* premium: 0 or 1
-* message: if no availability is known, contains the message, like _The TLD "bbb" is not supported_
-* type: the type of message, like _UnsupportedTld_
+A data point that has never been computed is computed on first access. `refresh=now` forces a new computation, unless
+the connector sets a minimum age with `properties.min_refresh_time`. If the computation takes longer than the platform
+waits, the answer is `202 Accepted`; request the data point again to read the result. Requesting a data point of an
+item that does not exist yet creates the item, if your token allows creating.
 
-#### screenshot
+```http
+GET /yourhosting/hosting/domain/example.com/dns HTTP/1.1
+Host: api.example.com
+Authorization: Bearer <token>
+```
 
-#### timing
+## Reading guide
 
-Time it takes to connect and get the first byte.
+| Section | Page | Read it for |
+|---|---|---|
+| Getting started | [Writing your first connector](getting-started.md) | A first connector, from file to stored data point and pull request |
+| | [Recipes](recipes.md) | Short worked examples to start a new connector from |
+| Concepts | [Concepts](concepts.md) | The vocabulary: items, item types, connectors, data points, clients, includes, refresh, history |
+| | [Entities and relations](entities-and-relations.md) | Item types, keys, `_entity.yaml` and relations between items |
+| | [Storage of results](storage.md) | Data forms, indexed fields, JSON, files and history |
+| Connector language | [Connector YAML reference](language/yaml-reference.md) | Every keyword of a connector definition |
+| | [Expression language](language/expressions.md) | The `<< ... >>` expressions, casts, `@suppress` and the names available in expressions |
+| | [Includes and requires](language/includes-and-requires.md) | Combining connectors, and stopping when data is missing |
+| | [Refresh rules](language/refresh.md) | When a data point is computed again |
+| | [Secrets in connectors](secrets.md) | Encrypted API keys in connector files |
+| Catalogue | [Connector catalogue](catalogue/index.md) | The connectors in this repository and their fields: [Domain connectors](catalogue/hosting-domain.md) and [Other connectors](catalogue/other.md) |
 
-* ttfb_ex_dns: excluding dns lookup, in seconds, like _0.0867899_
-* ttfb: total time to first byte, from request to first response, like _0.08757759999999999_
-* ttlb: total time until last byte is received, like _0.08763800000000001_. This time is NOT the time to first render.
-  The time is measured 10 times in a row, the first call is ignored to allow for 'warming up' of the connection.
-
-#### whois
-
-Whois data for the domain, the content and details are dependent on the registry, from almost none for `.de` to quite
-extensive for `.com`
-
-# Examples
-
-For getting info, you first need a key, to be requested at Sitekick.
-The base url is: `https://eu.sitekick.online`
-The next parts are:
-
-* client name (sitekick for default access, your shorthand name for your organisation). Clients can have a hierarchical
-  relationship where an upper client is allowed more access than lower clients, like `yourhosting`, `argeweb`.
-* subject area: general subject, like `hosting`, ...
-* subject: specific subject, like `domain`, `server`
-* key: the unique key for the item, can be a unique index like `3141592`, uuid or 'natural' key, like `yourhosting.nl`.
-
-General data:
-* [https://.../domain/yourhosting.nl](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl)
-Which is equivalent to using the database-id for this domain:
-* [https://.../domain/119396](https://eu.sitekick.online/yourhosting/hosting/domain/119396)
-Every item has a uuid to enable publication in a semi-secure way:
-* [https://.../domain/b56f5dc3-912e-b14f-3612-2e260cd6a9ce](https://eu.sitekick.online/yourhosting/hosting/domain/b56f5dc3-912e-b14f-3612-2e260cd6a9ce)
-
-Some specific data points:
-* [https://.../domain/yourhosting.nl/timing](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/timing)
-* [https://.../domain/yourhosting.nl/dns](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/dns)
-* [https://.../domain/yourhosting.nl/domainvalue](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/domainvalue)
-  When a data point has not been refreshed, it will be refreshed on first access.
-
-Force refresh of the data:
-* [https://.../domain/yourhosting.nl/timing?refresh=now](https://eu.sitekick.online/yourhosting/hosting/domain/yourhosting.nl/timing?refresh=now)
-  As you can see, the data for this data point are refreshed on every request.
+How the platform loads, validates and runs connectors in more depth, and how to install it, is described in the
+Sitekick platform documentation.

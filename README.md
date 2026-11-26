@@ -1,55 +1,35 @@
 # sitekick-connectors
 
-Connector definitions for the new sitekick platform. A connector defines the data source, processing and validation
-rules for a specific type of data.
+Connector definitions for the Sitekick hosting intelligence platform. A connector is a YAML file that tells the
+platform how to obtain one data point about an item (for example the DNS records, the certificate or the CMS of a
+domain), how to store the result and when to refresh it. The platform loads the definitions from this repository; the
+Python functions that connectors call live in the platform.
 
-# Overview
+## Documentation
 
-The Sitekick-api is an easily accessible API on any combination of subject domains. The user can easily define object
-types, their attributes and relations between objects.  
-The main use of the Sitekick-platform is integration of (external) data in one place. Using a [connector](#connectors),
-you can easily define the data to connect to.
+The documentation is published at <https://yourapi.github.io/sitekick-connectors/> and is built from `docs/` with
+MkDocs Material:
 
-# Entities
+- **Getting started**: writing your first connector, and recipes for common tasks.
+- **Concepts**: items, item types, connectors, data points, clients, includes, refresh, history and storage.
+- **Connector language**: the YAML reference, the expression language, includes and requires, refresh rules, secrets.
+- **Catalogue**: every connector in this repository.
 
+To preview the site locally (the configuration file is `_mkdocs.yml`: the platform's connector loader skips YAML
+files whose name starts with an underscore):
 
+```bash
+uvx --with-requirements requirements-docs.txt mkdocs serve --config-file _mkdocs.yml
+```
 
-# Connectors
+## Repository layout
 
-## List of connectors
+Each file is stored as `<client>/<item type group>/<item type>/<connector>.yaml`:
 
-### hosting|domain
-
-#### status
-The category for the website, can be:
-* not_registered: the domain is ont registered with a registrar.
-* no_whois: the domain is registered, but no whois data is available.
-* no_dns: the domain is registered, but no DNS data is provisioned.
-* no_a_record: the domain is registered, but no A-record is present.
-* no_nameserver: the domain is registered, but no nameserver entry is present in the DNS.
-* no_youronline_nameserver: the nameserver is not for any of the your.online brands
-* parked: standard landing page for the website, no active website.
-* initiated: the user has logged in and initiated building a website, but no further action was taken. User stopped after first step.
-* installed: the user installed a CMS, but did not place any non-standard content. Example is the `hello world` website.
-* outdated: active, but prehistoric in internet-time (like Microsoft Frontpage-edited)
-* unreachable: no response from the server
-* forsale: the user has placed a website for sale
-* active: a standard website is present, the user has placed content.
-
-* #### category
-* parked: standard landing page for the website, no active website.
-* initiated: the user has logged in and initiated building a website, but no further action was taken. User stopped after first step.
-* installed: the user installed a CMS, but did not place any non-standard content. Example is the `hello world` website.
-* outdated: active, but prehistoric in internet-time (like Microsoft Frontpage-edited)
-* unreachable: no response from the server
-* forsale: the user has placed a website for sale
-* active: a standard website is present, the user has placed content.
-
-#### certificate
-Data for the certificate, 
-{"issuer":"R11","ip":"172.104.255.188","valid_to":"2025-04-06T20:01:17Z","hostname":"sitekick.eu","common_name":"
-sitekick.eu","valid_from":"2025-01-06T20:01:18Z"}
-
-# Examples
-
-
+| Folder | Contents |
+|---|---|
+| `sitekick/` | Connectors of the root client, available to all clients: domain, server and network checks, settings, public data |
+| `your.online/` | Connectors of the Your.Online group and its brands: incentives, reports, contacts, products, subscriptions |
+| `argeweb/` | Connectors specific to the Argeweb brand |
+| `parker/` | Legacy item types |
+| `docs/` | The documentation site |

@@ -1,7 +1,7 @@
 type: Json  # Type of the data-form will be determined automatically in the future
 
 params:
-    filename: str
+    filename: << None >>
 
 include: dns
 
@@ -9,7 +9,7 @@ raw_data: << open(params.filename).read() >>
 
 data: << functions.hosting.server.plesk.parse_plesk_output(raw_data) >>
 
-requires: << data.Server.Hostname == dns.a_fqdn1 or data.Server["IP-address"] == dns.a1 >>
+requires(410): << data.meta.hostname == include.dns.attributes.a_fqdn1 or data.meta.ip == include.dns.attributes.a1 >>
 
 json:
     php_version: << data.php_version >>

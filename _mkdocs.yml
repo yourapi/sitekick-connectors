@@ -1,0 +1,58 @@
+site_name: Sitekick Connectors
+site_description: "Connector definitions for the Sitekick hosting intelligence platform: the connector language and the catalogue."
+site_url: https://yourapi.github.io/sitekick-connectors/
+repo_url: https://github.com/yourapi/sitekick-connectors
+edit_uri: ""
+docs_dir: docs
+use_directory_urls: true
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+  palette:
+    scheme: default
+    primary: indigo
+
+nav:
+  - Home: index.md
+  - Getting started:
+      - Writing your first connector: getting-started.md
+      - Recipes: recipes.md
+  - Concepts:
+      - Overview: concepts.md
+      - Entities and relations: entities-and-relations.md
+      - Storage of results: storage.md
+  - Connector language:
+      - YAML reference: language/yaml-reference.md
+      - Expression language: language/expressions.md
+      - Includes and requires: language/includes-and-requires.md
+      - Refresh rules: language/refresh.md
+      - Secrets in connectors: secrets.md
+  - Catalogue:
+      - Overview: catalogue/index.md
+      - Domain connectors: catalogue/hosting-domain.md
+      - Other connectors: catalogue/other.md
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
