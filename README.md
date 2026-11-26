@@ -1,5 +1,7 @@
 # sitekick-connectors
 
+**Documentation:** <https://yourapi.github.io/sitekick-connectors/>
+
 Connector definitions for the Sitekick hosting intelligence platform. A connector is a YAML file that tells the
 platform how to obtain one data point about an item (for example the DNS records, the certificate or the CMS of a
 domain), how to store the result and when to refresh it. The platform loads the definitions from this repository; the
@@ -14,6 +16,9 @@ MkDocs Material:
 - **Concepts**: items, item types, connectors, data points, clients, includes, refresh, history and storage.
 - **Connector language**: the YAML reference, the expression language, includes and requires, refresh rules, secrets.
 - **Catalogue**: every connector in this repository.
+
+The platform itself is documented in its own repository,
+[`sitekick-platform`](https://github.com/yourapi/sitekick-platform) (access on request).
 
 To preview the site locally (the configuration file is `_mkdocs.yml`: the platform's connector loader skips YAML
 files whose name starts with an underscore):
